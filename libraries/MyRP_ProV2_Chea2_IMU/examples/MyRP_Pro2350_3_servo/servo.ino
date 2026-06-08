@@ -7,7 +7,7 @@ int servoR_open = 120;  //-------------------->> ตั้งค่า กาง
 int readyL = 65, readyR = 70;        // ฟังก์ชันองศาของ arm_ready()  //--------->> แขนลง กางฝ่ามือออกเตรียมเข้าไปคีบ
 int behindL = 40, behindR = 45;      //ฟังก์ชันองศาของ arm_behind()  //--------->> แขนลง เอาฝ่ามือมาข้างหลัง
 int up = 95;                         //ยกแขนขึ้น
-int closeL = 105 closeR = 105;        //หุบลูกเล็ก close
+int closeL = 105 ,closeR = 105;        //หุบลูกเล็ก close
 int closeBigL = 75, closeBigR = 85;  //หุบลูกใหญ่ big_box
 int up45 = 40;
 
