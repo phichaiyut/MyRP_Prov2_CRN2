@@ -202,12 +202,12 @@ int readPositionB_none(int Track, int noise) {
 // ---------- PID ----------
 
 void PIDF(int SpeedL, int SpeedR, float Kp, float Kd) {
-  int Pos      = readPositionF(200, 50);
-  int Error    = Pos - set_position;
-  int PID_Value = (Kp * Error) + (Kd * (Error - LastError_F));
-  LastError_F  = Error;
-  int LeftPower  = SpeedL + PID_Value;
-  int RightPower = SpeedR - PID_Value;
+  float Pos = readPositionF(200, 50);
+  float Error = Pos - set_position;
+  float PID_Value = (Kp * Error) + (Kd * (Error - LastError_F));
+  LastError_F = Error;
+  float LeftPower  = SpeedL + PID_Value;
+  float RightPower = SpeedR - PID_Value;
   // if (leftPow  > 100) leftPow  = 100;
   // if (leftPow  < 0)   leftPow  = -5;
   // if (rightPow > 100) rightPow = 100;
@@ -247,12 +247,12 @@ void PIDF(int SpeedL, int SpeedR, float Kp, float Kd) {
 }
 
 void PIDB(int SpeedL, int SpeedR, float Kp, float Kd) {
-  int Pos      = readPositionB(200, 50);
-  int Error    = Pos - set_position;
-  int PID_Value = (Kp * Error) + (Kd * (Error - LastError_B));
+  float Pos      = readPositionB(200, 50);
+  float Error    = Pos - set_position;
+  float PID_Value = (Kp * Error) + (Kd * (Error - LastError_B));
   LastError_B  = Error;
-  int LeftPower  = SpeedL + PID_Value;
-  int RightPower = SpeedR - PID_Value;
+  float LeftPower  = SpeedL + PID_Value;
+  float RightPower = SpeedR - PID_Value;
   // if (leftPow  > 100) leftPow  = 100;
   // if (leftPow  < 0)   leftPow  = -5;
   // if (rightPow > 100) rightPow = 100;
@@ -300,19 +300,19 @@ static bool frontCenterLine() {
 
 void PIDF_none(int SpeedL, int SpeedR, float Kp, float Kd) {
   ReadCalibrateF();
-  int Pos;
+  float Pos;
   if (frontCenterLine()) {
     Pos = 2500;   // 2500
   } else {
     Pos = readPositionF_none(200, 50);
   }
 
-  int Error = Pos - set_position;
-  int PID_Value = (Kp * Error) + (Kd * (Error - LastError_F));
+  float Error = Pos - set_position;
+  float PID_Value = (Kp * Error) + (Kd * (Error - LastError_F));
   LastError_F = Error;
 
-  int LeftPower  = SpeedL + PID_Value;
-  int RightPower = SpeedR - PID_Value;
+  float LeftPower  = SpeedL + PID_Value;
+  float RightPower = SpeedR - PID_Value;
 
   LeftPower  = constrain(LeftPower, -100, 100);
   RightPower = constrain(RightPower, -100, 100);
@@ -326,19 +326,19 @@ static bool backCenterLine() {
       || (B[4] > Ref && B[5] > Ref);
 }
 void PIDB_none(int SpeedL, int SpeedR, float Kp, float Kd) {
-  int Pos;
+  float Pos;
   ReadCalibrateB();
   if (backCenterLine()) {
     Pos = 2500;
   } else {
     Pos = readPositionB_none(200, 50);
   }
-  // int Pos      = readPositionB_none(250, 50);
-  int Error    = Pos - set_position;
-  int PID_Value = (Kp * Error) + (Kd * (Error - LastError_B));
+  // float Pos      = readPositionB_none(250, 50);
+  float Error    = Pos - set_position;
+  float PID_Value = (Kp * Error) + (Kd * (Error - LastError_B));
   LastError_B  = Error;
-  int LeftPower  = SpeedL + PID_Value;
-  int RightPower = SpeedR - PID_Value;
+  float LeftPower  = SpeedL + PID_Value;
+  float RightPower = SpeedR - PID_Value;
    LeftPower  = constrain(LeftPower, -100, 100);
   RightPower = constrain(RightPower, -100, 100);
   Motor(-LeftPower, -RightPower);
