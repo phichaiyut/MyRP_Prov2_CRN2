@@ -113,12 +113,12 @@ void ReadCalibrateB() {
   ReadB();
 
   for (int i = 0; i < NUM_SENSORS; i++) {
-    B[i] = constrain(B[i], robot.sensorMinB[B_PIN[i]], robot.sensorMaxB[B_PIN[i]]);
+    B[i] = constrain(B[i], sensorMinB[B_PIN[i]], sensorMaxB[B_PIN[i]]);
     int16_t x;
     if (LineColor == 0)
-      x = map(B[i], robot.sensorMinB[B_PIN[i]], robot.sensorMaxB[B_PIN[i]], 1000, 0);
+      x = map(B[i], sensorMinB[B_PIN[i]], sensorMaxB[B_PIN[i]], 1000, 0);
     else
-      x = map(B[i], robot.sensorMinB[B_PIN[i]], robot.sensorMaxB[B_PIN[i]], 0, 1000);
+      x = map(B[i], sensorMinB[B_PIN[i]], sensorMaxB[B_PIN[i]], 0, 1000);
     if (x < BACK_MIN)   x = 0;
     if (x > BACK_MAX)  x = 1000;
     // if (x < 0)    x = 0;
