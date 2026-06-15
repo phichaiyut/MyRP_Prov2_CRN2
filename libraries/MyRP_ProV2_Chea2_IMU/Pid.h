@@ -17,7 +17,7 @@ int line_centor = 0;
 int MaxSpeed = 100;
 int MinSpeed = -5;
 int ModePidStatus = 0;
-int setsensortracklineL = 0, setsensortracklineR = 7;
+int setsensortracklineL = 0, setsensortracklineR = 6;
 int dottedline = 0;
 // ---------- Config ----------
 void SetFG(int time);
