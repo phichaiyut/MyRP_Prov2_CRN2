@@ -75,7 +75,7 @@ void ReadCalibrateF() {
   ReadF();
   for (int i = 0; i < NUM_SENSORS; i++) {
     F[i] = constrain(F[i], sensorMinA[i], sensorMaxA[i]);
-    int x;
+    int16_t x;
     if (LineColor == 0)
       x = map(F[i], sensorMinA[i], sensorMaxA[i], 1000, 0);
     else
@@ -95,7 +95,7 @@ void ReadCalibrateC() {
   
   for (int i = 0; i < 2; i++) {
     C[i] = constrain(C[i], sensorMinC[i], sensorMaxC[i]);
-    int x;
+    int16_t x;
     if (LineColor == 0)
       x = map(C[i], sensorMinC[i], sensorMaxC[i], 1000, 0);
     else
@@ -113,12 +113,12 @@ void ReadCalibrateB() {
   ReadB();
 
   for (int i = 0; i < NUM_SENSORS; i++) {
-    B[i] = constrain(B[i], sensorMinB[i], sensorMaxB[i]);
-    int x;
+    B[i] = constrain(B[i], robot.sensorMinB[B_PIN[i]], robot.sensorMaxB[B_PIN[i]]);
+    int16_t x;
     if (LineColor == 0)
-      x = map(B[i], sensorMinB[i], sensorMaxB[i], 1000, 0);
+      x = map(B[i], robot.sensorMinB[B_PIN[i]], robot.sensorMaxB[B_PIN[i]], 1000, 0);
     else
-      x = map(B[i], sensorMinB[i], sensorMaxB[i], 0, 1000);
+      x = map(B[i], robot.sensorMinB[B_PIN[i]], robot.sensorMaxB[B_PIN[i]], 0, 1000);
     if (x < BACK_MIN)   x = 0;
     if (x > BACK_MAX)  x = 1000;
     // if (x < 0)    x = 0;
@@ -127,6 +127,7 @@ void ReadCalibrateB() {
   }
   
 }
+
 
 void ReadSensor() {
   ReadCalibrateF();
