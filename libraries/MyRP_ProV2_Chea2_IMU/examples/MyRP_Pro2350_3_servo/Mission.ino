@@ -5,10 +5,6 @@ void Mission() {
   // set_line_center(0);  // เดินธรรมดา เข้ากลางหุ่น
   set_line_center(1);  // เดินตามเส้น เข้ากลางหุ่น
 
-  // Line position: 0-5000
-  // 1000 = ซ้าย | 2500 = กลาง | 4000 = ขวา
-  set_position_line(2500);
-
   // Line color
   TrackLineColor(0);  // 0 = พื้นขาวเส้นดำ | 1 = พื้นดำเส้นขาว
 
@@ -24,6 +20,8 @@ void Mission() {
   // ModeSpdPID(3, 100, -50);   // โหมดคิดเอง
   // ModeSpdPID(4, 100, 0);     // PID แบบปกติ
 
-// gostart(30);
+
+
+  
 
 }  //___________________ปีกกาห้ามลบ__________________

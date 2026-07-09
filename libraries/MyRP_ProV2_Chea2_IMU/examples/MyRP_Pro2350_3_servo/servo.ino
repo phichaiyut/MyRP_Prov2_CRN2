@@ -7,9 +7,10 @@ int servoR_open = 120;  //-------------------->> ตั้งค่า กาง
 int readyL = 65, readyR = 70;        // ฟังก์ชันองศาของ arm_ready()  //--------->> แขนลง กางฝ่ามือออกเตรียมเข้าไปคีบ
 int behindL = 40, behindR = 45;      //ฟังก์ชันองศาของ arm_behind()  //--------->> แขนลง เอาฝ่ามือมาข้างหลัง
 int up = 95;                         //ยกแขนขึ้น
-int closeL = 105 ,closeR = 105;        //หุบลูกเล็ก close
+int closeL = 105, closeR = 105;        //หุบลูกเล็ก close
 int closeBigL = 75, closeBigR = 85;  //หุบลูกใหญ่ big_box
 int up45 = 40;
+
 
 
 void arm_ready()  //--------->> แขนลง กางฝ่ามือออกเตรียมเข้าไปคีบ
@@ -23,7 +24,7 @@ void arm_open_down()  //--------->>  กางฝ่ามือออก  แ�
 {
   MotorStop();
   arm_left_right(servoL_open, servoR_open);
-  delay(300);
+  delay(200);
   armupdown(servo_down);
   delay(50);
 }
@@ -55,7 +56,16 @@ void arm_down_close()  //--------->>  เอาแขนลง  และ หุ
 {
   MotorStop();
   armupdown(servo_down);
-  delay(100);
+  delay(200);
+  arm_left_right(servoL_open - closeL, servoR_open - closeR);
+  delay(50);
+}
+
+void arm_close_down()  //--------->>  เอาแขนลง  และ หุบมือเข้า
+{
+  MotorStop();
+  armupdown(servo_down);
+  delay(200);
   arm_left_right(servoL_open - closeL, servoR_open - closeR);
   delay(50);
 }
@@ -66,7 +76,7 @@ void arm_up_close()  //--------->>  ยกแขนขึ้น  และ ห�
   armupdown(servo_down + up);
   delay(100);
   arm_left_right(servoL_open - closeL, servoR_open - closeR);
-  delay(100);
+  delay(50);
 }
 void arm_close_up()  //--------->>  ยกแขนขึ้น  และ หุบมือเข้า
 {
@@ -183,6 +193,12 @@ void arm_down_close(int spd)  //--------->>  เอาแขนลง  และ
   arm_left_right(servoL_open - closeL, servoR_open - closeR, spd);
 }
 
+void arm_close_down(int spd)  //--------->>  เอาแขนลง  และ หุบมือเข้า
+{
+  arm_left_right(servoL_open - closeL, servoR_open - closeR, spd);
+  armupdown(servo_down, spd);
+}
+
 void arm_up_close(int spd)  //--------->>  ยกแขนขึ้น  และ หุบมือเข้า
 {
   armupdown(servo_down + up, spd);
@@ -241,73 +257,3 @@ void arm_open_l(int spd) {
 void arm_open_r(int spd) {
   arm_left_right(servoL_open - closeL, servoR_open, spd);
 }
-
-void fw_ch_line(int num)
-  {
-    for(int i=0; i< num; i++)
-      {
-        while(1)
-          {
-            delay(5);      
-            if(read_sensorA(0) < md_sensorA(0)-50 && read_sensorA(7) > md_sensorA(7)-50)
-              {
-                Motor(-5 ,20);
-              }
-            else if(read_sensorA(0) > md_sensorA(0)-50 && read_sensorA(7) < md_sensorA(7)-50)
-              {
-                Motor(20 ,-5);
-              }
-            else if(read_sensorA(0) > md_sensorA(0)-50 && read_sensorA(7) > md_sensorA(7)-50)
-              {          
-                Motor(15 ,15);
-              }
-            else 
-              {
-                Motor(-1 ,-1);
-                break;
-              }      
-          }
-        if(num > 1)
-          {
-            Motor(-15 ,-15);
-            delay(50);
-            Motor(-1 ,-1);
-          }
-      }
-    
-  }
-
-void bw_ch_line(int num)
-  {
-    for(int i=0; i< num; i++)
-      {
-        while(1)
-          {
-            delay(5);      
-            if(read_sensorB(0) < md_sensorB(0)-50 && read_sensorB(7) > md_sensorB(7)-50)
-              {
-                Motor(-20 ,5);
-              }
-            else if(read_sensorB(0) > md_sensorB(0)-50 && read_sensorB(7) < md_sensorB(7)-50)
-              {
-                Motor(5 ,-20);
-              }
-            else if(read_sensorB(0) > md_sensorB(0)-50 && read_sensorB(7) > md_sensorB(7)-50)
-              {          
-                Motor(-15 ,-20);
-              }
-            else 
-              {
-                Motor(-1 ,-1);
-                break;
-              }      
-          }
-        if(num > 1)
-          {
-            Motor(10 ,10);
-            delay(50);
-            Motor(-1 ,-1);
-          }
-      }
-    
-  }

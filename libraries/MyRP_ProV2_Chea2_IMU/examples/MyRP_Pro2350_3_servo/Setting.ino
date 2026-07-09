@@ -4,8 +4,8 @@ void Setting() {
   /******************** CALIBRATION ********************/
 
 
-  clampSensorValueF(80, 900);   //สำหรับกรองค่า  calibrate
-  clampSensorValueB(500, 900);  //สำหรับกรองค่า  calibrate
+  clampSensorValueF(100, 800);   //สำหรับกรองค่า  calibrate
+  clampSensorValueB(100, 800);  //สำหรับกรองค่า  calibrate
   clampSensorValueC(0, 1000);  //สำหรับกรองค่า  calibrate
 
   /******************** LINE SENSOR CONFIG ********************/
@@ -18,13 +18,13 @@ void Setting() {
   // set_line_center(0);        // เดินธรรมดา เข้ากลางหุ่น
   set_line_center(1);    // เดินตามเส้น เข้ากลางหุ่น
   SetToCenterSpeed(20);  // ความเร็วเข้ากลางหุ่น
-  set_slow_kp_kd(0.003 , 0.03, 0.003, 0.03);
+  set_slow_kp_kd(0.005 , 0.05, 0.005, 0.05);
   /******************** TURN & SPEED CONFIG ********************/
   SetTurnSpeed(60);  // ความเร็วเลี้ยวหุ่น (l L ) (r R)
 
 
-  TurnSpeedLeft(25, 80, 60);   // เลี้ยวซ้าย (q Q)
-  TurnSpeedRight(80, 25, 60);  // เลี้ยวขวา (e E)
+  TurnSpeedLeft(10, 100, 60);   // เลี้ยวซ้าย (q Q)
+  TurnSpeedRight(100, 10, 60);  // เลี้ยวขวา (e E)
 
 
   ModeSpdPID(0, 100, -5);  // โหมดควบคุมความเร็ว
@@ -32,9 +32,11 @@ void Setting() {
 
   /******************** LINE POSITION ********************/
   set_position_line(2500);  // 0–5000 | 1000=ซ้าย 2500=กลาง 4000=ขวา
+  set_position_line_l(500);  // 0–5000 | วิ่งโค้งซ้าย
+  set_position_line_r(4500);  // 0–5000 | วิ่งโค้งขวา
 
   /******************** DISTANCE SENSOR ********************/
-  SetAnalogDistance(28);  // A0–A3 เซนเซอร์ตรวจจับวัตถุ
+  SetAnalogDistance(A0);  // A0–A3 เซนเซอร์ตรวจจับวัตถุ
 
   /******************** DEBUG / SERIAL MONITOR ********************/
   // SerialDistance();                  // เซนเซอร์วัดระยะ

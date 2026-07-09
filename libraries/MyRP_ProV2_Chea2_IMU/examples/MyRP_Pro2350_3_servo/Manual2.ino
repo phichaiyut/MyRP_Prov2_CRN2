@@ -274,3 +274,151 @@
    setgb(time);     : ตั้งค่า Gyro ถอย
 --------------------------------------------------------- */
 
+
+
+/*==============================================================================
+  Short Circle Motion Functions
+
+  ฟังก์ชันย่อสำหรับสั่งหุ่นยนต์เคลื่อนที่แบบโค้ง (Circle Motion)
+  เหมาะสำหรับเขียนโปรแกรมแข่งขันหรือผู้ที่ต้องการพิมพ์คำสั่งสั้น ๆ
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ Function                     Description                     Example        │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ ffcl(Speed, select)          Forward Circle Left            ffcl(60,'g');  │
+  │ ffcr(Speed, select)          Forward Circle Right           ffcr(60,'g');  │
+  │----------------------------------------------------------------------------│
+  │ fftimercl(Speed, time)       Forward Circle Left            fftimercl(60,500); │
+  │                               (Time)                                           │
+  │ fftimercr(Speed, time)       Forward Circle Right           fftimercr(60,500); │
+  │                               (Time)                                           │
+  │----------------------------------------------------------------------------│
+  │ ffcmcl(Speed, distance)      Forward Circle Left            ffcmcl(60,20); │
+  │                               (Distance)                                       │
+  │ ffcmcr(Speed, distance)      Forward Circle Right           ffcmcr(60,20); │
+  │                               (Distance)                                       │
+  │----------------------------------------------------------------------------│
+  │ fftimercl(Speed,time,select) Forward Circle Left            fftimercl(60,500,'g'); │
+  │                               (Time + Detect)                                  │
+  │ fftimercr(Speed,time,select) Forward Circle Right           fftimercr(60,500,'g'); │
+  │                               (Time + Detect)                                  │
+  │----------------------------------------------------------------------------│
+  │ ffcmcl(Speed,distance,select) Forward Circle Left           ffcmcl(60,20,'g'); │
+  │                                (Distance + Detect)                            │
+  │ ffcmcr(Speed,distance,select) Forward Circle Right          ffcmcr(60,20,'g'); │
+  │                                (Distance + Detect)                            │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ bbcl(Speed, select)          Backward Circle Left           bbcl(60,'g');  │
+  │ bbcr(Speed, select)          Backward Circle Right          bbcr(60,'g');  │
+  │----------------------------------------------------------------------------│
+  │ bbtimercl(Speed, time)       Backward Circle Left           bbtimercl(60,500); │
+  │                               (Time)                                           │
+  │ bbtimercr(Speed, time)       Backward Circle Right          bbtimercr(60,500); │
+  │                               (Time)                                           │
+  │----------------------------------------------------------------------------│
+  │ bbcmcl(Speed, distance)      Backward Circle Left           bbcmcl(60,20); │
+  │                               (Distance)                                       │
+  │ bbcmcr(Speed, distance)      Backward Circle Right          bbcmcr(60,20); │
+  │                               (Distance)                                       │
+  │----------------------------------------------------------------------------│
+  │ bbtimercl(Speed,time,select) Backward Circle Left           bbtimercl(60,500,'g'); │
+  │                               (Time + Detect)                                  │
+  │ bbtimercr(Speed,time,select) Backward Circle Right          bbtimercr(60,500,'g'); │
+  │                               (Time + Detect)                                  │
+  │----------------------------------------------------------------------------│
+  │ bbcmcl(Speed,distance,select) Backward Circle Left          bbcmcl(60,20,'g'); │
+  │                                (Distance + Detect)                            │
+  │ bbcmcr(Speed,distance,select) Backward Circle Right         bbcmcr(60,20,'g'); │
+  │                                (Distance + Detect)                            │
+  └────────────────────────────────────────────────────────────────────────────┘
+
+  Parameters
+    Speed      : Motor speed
+    time       : Time (milliseconds)
+    distance   : Distance (centimeters)
+    select     : Line detection condition
+
+  Notes
+    ff = Forward
+    bb = Backward
+    cl = Circle Left
+    cr = Circle Right
+
+    These functions are shorthand aliases of the standard Circle Motion API.
+
+==============================================================================*/
+
+/*==============================================================================
+  Circle Motion Functions (Lowercase API)
+
+  ฟังก์ชันชื่อพิมพ์เล็กสำหรับสั่งหุ่นยนต์เคลื่อนที่แบบโค้ง (Circle Motion)
+  ใช้งานเหมือนกับฟังก์ชันมาตรฐานทุกประการ แต่ใช้ชื่อพิมพ์เล็กทั้งหมด
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ Function                        Description                    Example      │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ ffcirclel(Speed, select)        Forward Circle Left           ffcirclel(60,'g'); │
+  │ ffcircler(Speed, select)        Forward Circle Right          ffcircler(60,'g'); │
+  │----------------------------------------------------------------------------│
+  │ fftimercirclel(Speed, time)     Forward Circle Left           fftimercirclel(60,500); │
+  │                                 (Time)                                           │
+  │ fftimercircler(Speed, time)     Forward Circle Right          fftimercircler(60,500); │
+  │                                 (Time)                                           │
+  │----------------------------------------------------------------------------│
+  │ ffcmcirclel(Speed, distance)    Forward Circle Left           ffcmcirclel(60,20); │
+  │                                 (Distance)                                       │
+  │ ffcmcircler(Speed, distance)    Forward Circle Right          ffcmcircler(60,20); │
+  │                                 (Distance)                                       │
+  │----------------------------------------------------------------------------│
+  │ fftimercirclel(Speed,time,      Forward Circle Left           fftimercirclel(60,500,'g'); │
+  │                 select)         (Time + Detect)                                 │
+  │ fftimercircler(Speed,time,      Forward Circle Right          fftimercircler(60,500,'g'); │
+  │                 select)         (Time + Detect)                                 │
+  │----------------------------------------------------------------------------│
+  │ ffcmcirclel(Speed,distance,     Forward Circle Left           ffcmcirclel(60,20,'g'); │
+  │             select)             (Distance + Detect)                           │
+  │ ffcmcircler(Speed,distance,     Forward Circle Right          ffcmcircler(60,20,'g'); │
+  │             select)             (Distance + Detect)                           │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ bbcirclel(Speed, select)        Backward Circle Left          bbcirclel(60,'g'); │
+  │ bbcircler(Speed, select)        Backward Circle Right         bbcircler(60,'g'); │
+  │----------------------------------------------------------------------------│
+  │ bbtimercirclel(Speed, time)     Backward Circle Left          bbtimercirclel(60,500); │
+  │                                 (Time)                                           │
+  │ bbtimercircler(Speed, time)     Backward Circle Right         bbtimercircler(60,500); │
+  │                                 (Time)                                           │
+  │----------------------------------------------------------------------------│
+  │ bbcmcirclel(Speed, distance)    Backward Circle Left          bbcmcirclel(60,20); │
+  │                                 (Distance)                                       │
+  │ bbcmcircler(Speed, distance)    Backward Circle Right         bbcmcircler(60,20); │
+  │                                 (Distance)                                       │
+  │----------------------------------------------------------------------------│
+  │ bbtimercirclel(Speed,time,      Backward Circle Left          bbtimercirclel(60,500,'g'); │
+  │                 select)         (Time + Detect)                                 │
+  │ bbtimercircler(Speed,time,      Backward Circle Right         bbtimercircler(60,500,'g'); │
+  │                 select)         (Time + Detect)                                 │
+  │----------------------------------------------------------------------------│
+  │ bbcmcirclel(Speed,distance,     Backward Circle Left          bbcmcirclel(60,20,'g'); │
+  │             select)             (Distance + Detect)                           │
+  │ bbcmcircler(Speed,distance,     Backward Circle Right         bbcmcircler(60,20,'g'); │
+  │             select)             (Distance + Detect)                           │
+  └────────────────────────────────────────────────────────────────────────────┘
+
+  Parameters
+    Speed      : Motor speed
+    time       : Time in milliseconds (ms)
+    distance   : Distance in centimeters (cm)
+    select     : Line detection condition
+
+  Notes
+    ff = Forward
+    bb = Backward
+    circle = Circle Motion
+    l = Left
+    r = Right
+
+    These functions are lowercase aliases of the standard Circle Motion API.
+
+==============================================================================*/
+
+

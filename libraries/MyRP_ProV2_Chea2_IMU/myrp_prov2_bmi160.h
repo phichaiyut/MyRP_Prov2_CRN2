@@ -35,12 +35,12 @@ void SetRobotAngle() {
   current_degree = gyroZ();
 }
 
-float kpHold = 2.5;
-float kdHold = 1.2;
-float kpFHold = 4.5;
-float kdFHold = 9.0;
-float kpBHold = 2.5;
-float kdBHold = 1.2;
+float kpHold = 10.5;
+float kdHold = 5.5;
+float kpFHold = 10.5;
+float kdFHold = 5.2;
+float kpBHold = 10.5;
+float kdBHold = 5.2;
 float holdAngle = 0;
 float prevErrHold = 0;
 float prevErrHoldB = 0;
@@ -82,7 +82,7 @@ void HoldAngleF() {
   else if (error < -180) error += 360;
   float d = error - prevErrHoldB;
   int power = (error * kpFHold) + (d * kdFHold);
-  power = constrain(power, -10, 10);   // แรงหมุน
+  power = constrain(power, -50, 50);   // แรงหมุน
   Motor(power, -power);   // หมุนอยู่กับที่
   prevErrHoldB = error;
 }
@@ -586,14 +586,14 @@ void BackCenterG() {
 /* ---------- track select (gyro) ---------- */
 
 void TrackSelectG(int spd, char select) {
-  if (select == 'l') {
+  if (select == 'L') {
     spinDegree(-90);
-  } else if(select == 'L') {
-    ToCenterRG();
+  } else if(select == 'l') {
+    ToCenterLG();
     spinDegree(-90);
-  } else if ( select == 'r') {
+  } else if ( select == 'R') {
     spinDegree(90);
-  }else if ( select == 'R') {
+  }else if ( select == 'r') {
     ToCenterRG();
     spinDegree(90);
   } 
@@ -613,7 +613,7 @@ void TrackSelectG(int spd, char select) {
     while (1) {
       RunG(spd);
       ReadCalibrateF();
-      if (F[0] < Ref && F[7] < Ref) break;
+      if (F[0] < Ref  && F[7] < Ref) break;
     }
     BZoff();
   } else if (select == 'c' || select == 'C') {
@@ -632,22 +632,29 @@ void TrackSelectG(int spd, char select) {
         break;
       }
     }
-  }else {
-SetG(100);
-   }
+  } else if(select == 's' || select == 'S'){
+    Motor(-10, -10);
+    delay(10);
+    Motor(-1, -1);
+    delay(1);
+    MotorStop();
+  }
+  else{
+      SetG(100);
+  }
   
 }
 
 void TrackSelectGB(int spd, char select) {
-  if ( select == 'l') {
+  if ( select == 'L') {
     spinDegree(-90);
-  }else if (select == 'L' ) {
+  }else if (select == 'l' ) {
     BackCenterG();
     spinDegree(-90);
   }
-   else if ( select == 'r') {
+   else if ( select == 'R') {
     spinDegree(90);
-  }else if (select == 'R' ) {
+  }else if (select == 'r' ) {
     BackCenterG();
     spinDegree(90);
   } else if (select == 'q' || select == 'Q') {
@@ -685,8 +692,15 @@ void TrackSelectGB(int spd, char select) {
         break;
       }
     }
-  }else{
-    SetGB(100);
+  } else if(select == 's' || select == 'S'){
+    Motor(10, 10);
+    delay(10);
+    Motor(1, 1);
+    delay(1);
+    MotorStop();
+  }
+  else{
+    SetG(100);
   }
   
 }

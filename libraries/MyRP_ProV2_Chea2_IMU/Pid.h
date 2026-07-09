@@ -9,15 +9,19 @@ int tctL, tctR, bctL, bctR;
 int LTurnSpdL, LTurnSpdR, TurnDelayL;
 int RTurnSpdL, RTurnSpdR, TurnDelayR;
 int set_position = 2500;
+int set_positionL = 500;
+int set_positionR = 4500;
 float slow_kp = 0.005, slow_kd = 0.05;
 float slow_kp_f = 0.005, slow_kd_f = 0.05;
 float slow_kp_b = 0.005, slow_kd_b = 0.05;
+float slow_kpf = 0.005, slow_kdf = 0.05;
+float slow_kpb = 0.005, slow_kdb = 0.05;
 int line_centor = 0;
 
 int MaxSpeed = 100;
 int MinSpeed = -5;
 int ModePidStatus = 0;
-int setsensortracklineL = 0, setsensortracklineR = 6;
+int setsensortracklineL = 0, setsensortracklineR = 7;
 int dottedline = 0;
 // ---------- Config ----------
 void SetFG(int time);
@@ -39,10 +43,10 @@ void SetToCenterSpeed(int tctv) {
   bctR = BackRightBaseSpeed;
 
   // // Slow PID
-  // slow_kp_f = PID_KP_Front;
-  // slow_kd_f = PID_KD_Front;
-  // slow_kp_b = PID_KP_Back;
-  // slow_kd_b = PID_KD_Back;
+  slow_kpf = PID_KP_Front;
+  slow_kdf = PID_KD_Front;
+  slow_kpb = PID_KP_Back;
+  slow_kdb = PID_KD_Back;
 }
 void set_slow_kp_kd(float kp_f, float kd_f, float kp_b, float kd_b) {
   slow_kp_f = kp_f;
@@ -85,6 +89,30 @@ void set_position_line(int _pos) {
   } else {
     set_position = _pos;
   }
+}
+
+void set_position_line_l(int _pos) {
+  
+    if (_pos < 0) {
+    set_positionL = 0;
+  } else if (_pos > 5000) {
+    set_positionL = 5000;
+  } else {
+    set_positionL = _pos;
+  }
+  
+}
+
+void set_position_line_r(int _pos) {
+  
+    if (_pos < 0) {
+    set_positionR = 0;
+  } else if (_pos > 5000) {
+    set_positionR = 5000;
+  } else {
+    set_positionR = _pos;
+  }
+  
 }
 
 void set_sensor_track_line(int L, int R) {
@@ -363,12 +391,12 @@ void BBtimer(int baseSpeed, int totalTime) {
 
 void lf(int totalTime) {
   unsigned long endTime = millis() + totalTime;
-  while (millis() <= endTime) PIDF(0,0, 0.015, 0.30);
+  while (millis() <= endTime) PIDF(0,0, 0.030, 0.60);
 }
 
 void lb(int totalTime) {
   unsigned long endTime = millis() + totalTime;
-  while (millis() <= endTime) PIDB(0,0, 0.015, 0.30);
+  while (millis() <= endTime) PIDB(0,0, 0.030, 0.60);
 }
 
 
@@ -585,8 +613,9 @@ void SpinL(int speed) {
     ReadCalibrateF();
     Motor(-speed, speed);
     if (F[2] >= Ref) {
-      Motor(speed, -speed);
-      delay(5);
+      // Motor(speed, -speed);
+      // delay(5);
+      lf(tspd);
       MotorStop();
       break;
     }
@@ -616,8 +645,9 @@ void SpinL2(int speed) {
     ReadCalibrateF();
     Motor(-speed, speed);
     if (F[2] >= Ref) {
-      Motor(speed, -speed);
-      delay(5);
+      // Motor(speed, -speed);
+      // delay(5);
+      lf(tspd);
       MotorStop();
       break;
     }
@@ -647,8 +677,9 @@ void SpinR(int speed) {
     ReadCalibrateF();
     Motor(speed, -speed);
     if (F[5] >= Ref) {
-      Motor(-speed, speed);
-      delay(5);
+      // Motor(-speed, speed);
+      // delay(5);
+      lf(tspd);
       MotorStop();
       break;
     }
@@ -675,8 +706,9 @@ void SpinR2(int speed) {
     ReadCalibrateF();
     Motor(speed, -speed);
     if (F[5] >= Ref) {
-      Motor(-speed, speed);
-      delay(5);
+      // Motor(-speed, speed);
+      // delay(5);
+      lf(tspd);
       MotorStop();
       break;
     }
@@ -698,7 +730,7 @@ void TurnLeft_B() {
     Motor(-LTurnSpdL, LTurnSpdR);
     ReadCalibrateB();
     if (B[5] >= Ref) {
-      MotorStop();
+      //MotorStop();
       break;
     }
   }
@@ -712,7 +744,7 @@ void TurnRight_B() {
     ReadCalibrateB();
 
     if (B[2] >= Ref) {
-      MotorStop();
+      //MotorStop();
       break;
     }
   }
@@ -737,8 +769,9 @@ void SpinL_B(int speed) {
     Motor(-speed, speed);
 
     if (B[5] >= Ref) {
-      Motor(speed, -speed);
-      delay(5);
+      // Motor(speed, -speed);
+      // delay(5);
+      lb(tspd);
       MotorStop();
       break;
     }
@@ -767,8 +800,9 @@ void SpinL2_B(int speed) {
     ReadCalibrateB();
     Motor(-speed, speed);
     if (B[5] >= Ref) {
-      Motor(speed, -speed);
-      delay(5);
+      // Motor(speed, -speed);
+      // delay(5);
+      lb(tspd);
       MotorStop();
       break;
     }
@@ -797,8 +831,9 @@ void SpinR_B(int speed) {
     ReadCalibrateB();
     Motor(speed, -speed);
     if (B[2] >= Ref) {
-      Motor(-speed, speed);
-      delay(5);
+      // Motor(-speed, speed);
+      // delay(5);
+      lb(tspd);
       MotorStop();
       break;
     }
@@ -827,8 +862,9 @@ void SpinR2_B(int speed) {
     ReadCalibrateB();
     Motor(speed, -speed);
     if (B[2] >= Ref) {
-      Motor(-speed, speed);
-      delay(5);
+      // Motor(-speed, speed);
+      // delay(5);
+      lb(tspd);
       MotorStop();
       break;
     }
@@ -870,47 +906,57 @@ void TrackSelectF(int spd, char x) {
   } else if (x == 'l' || x == 'L') {
     ToCenter();
     SpinL();
-    lf(tspd);
+    //lf(tspd);
   } else if (x == 'r' || x == 'R') {
     ToCenter();
     SpinR();
-    lf(tspd);
+    // lf(tspd);
   } else if (x == 'q' || x == 'Q') {
+     while (1) {
+      PIDF(tctL,tctR,slow_kpf,slow_kdf);
+      ReadCalibrateF();
+      if (F[0] > Ref) break;
+    }
     BZon();
     while (1) {
-      Motor(spd / 2, spd / 2);
+      Motor(tctL/2, tctR/2);
       ReadCalibrateF();
-      if (F[0] < Ref && F[1] < Ref) {
-        delay(20);
+      if (F[0] < Ref ) {
+        //delay(20);
         BZoff();
         break;
       }
     }
     TurnLeft();
-    lf(50);
+    //lf(10);
   } else if (x == 'e' || x == 'E') {
+     while (1) {
+      PIDF(tctL,tctR,slow_kpf,slow_kdf);
+      ReadCalibrateF();
+      if (F[7] > Ref) break;
+    }
     BZon();
     while (1) {
-      Motor(spd / 2, spd / 2);
+      Motor(tctL/2, tctR/2);
       ReadCalibrateF();
-      if (F[6] < Ref && F[7] < Ref) {
-        delay(20);
+      if ( F[7] < Ref) {
+        //delay(20);
         BZoff();
         break;
       }
     }
     TurnRight();
-    lf(tspd);
+   // lf(10);
   } else if (x == 'c' || x == 'C') {
     ToCenter();
   } else if (x == 'd' || x == 'D') {
     ToCenter();
     SpinR_B();
-    lb(tspd);
+    //lb(tspd);
   } else if (x == 'a' || x == 'A') {
     ToCenter();
     SpinL_B();
-    lb(tspd);
+    //lb(tspd);
   } else if (x == 'b' || x == 'B') {
     BZon();
     ModeToCenter();
@@ -965,47 +1011,57 @@ void TrackSelectB(int spd, char x) {
   } else if (x == 'l' || x == 'L') {
     BackCenter();
     SpinL();
-    lf(tspd);
+    //lf(tspd);
   } else if (x == 'r' || x == 'R') {
     BackCenter();
     SpinR();
-    lf(tspd);
+    //lf(tspd);
   } else if (x == 'c' || x == 'C') {
     BackCenter();
   } else if (x == 'd' || x == 'D') {
     BackCenter();
     SpinR_B();
-    lb(tspd);
+    //lb(tspd);
   } else if (x == 'a' || x == 'A') {
     BackCenter();
     SpinL_B();
-    lb(tspd);
+    //lb(tspd);
   } else if (x == 'e' || x == 'E') {
+     while (1) {
+      PIDB(bctL,bctR,slow_kpb,slow_kdb);
+      ReadCalibrateB();
+      if (B[0] > Ref) break;
+    }
     BZon();
     while (1) {
-      Motor(-spd / 2, -spd / 2);
+      Motor(-bctL/2, -bctR/2);
       ReadCalibrateB();
-      if (B[0] < Ref && B[1] < Ref) {
-        delay(50);
+      if (B[0] < Ref) {
+        //delay(50);
         BZoff();
         break;
       }
     }
     TurnLeft_B();
-    lb(tspd);
+   //lb(tspd);
   } else if (x == 'q' || x == 'Q') {
+     while (1) {
+      PIDB(bctL,bctR,slow_kpb,slow_kdb);
+      ReadCalibrateB();
+      if (B[7] > Ref) break;
+    }
     BZon();
     while (1) {
-      Motor(-spd / 2, -spd / 2);
+      Motor(-bctL/2, -bctR/2);
       ReadCalibrateB();
-      if (B[6] < Ref && B[7] < Ref) {
-        delay(50);
+      if ( B[7] < Ref) {
+        //delay(50);
         BZoff();
         break;
       }
     }
     TurnRight_B();
-    lb(tspd);
+    //lb(tspd);
   } else if (x == 'b' || x == 'B') {
     BZon();
     // Motor(-BackLeftBaseSpeed, -BackRightBaseSpeed);
@@ -1069,7 +1125,7 @@ void FF(int Speed, char select) {
   while (1) {
     PIDF(LeftBaseSpeed, RightBaseSpeed, PID_KP_Front, PID_KD_Front);
     ReadCalibrateF();
-    if ((F[0] > Ref && F[7] > Ref) || (F[0] > Ref && F[2] > Ref) || (F[5] > Ref && F[7] > Ref)  || (F[2] > Ref && F[5] > Ref)) {
+    if (F[0] > Ref || F[7] > Ref  || (F[2] > Ref && F[5] > Ref)) {
       break;
     }
   }
@@ -1081,7 +1137,7 @@ void BB(int Speed, char select) {
   while (1) {
     PIDB(BackLeftBaseSpeed, BackRightBaseSpeed, PID_KP_Back, PID_KD_Back);
     ReadCalibrateB();
-    if ((B[0] > Ref && B[7] > Ref) || (B[0] > Ref && B[2] > Ref) || (B[5] > Ref && B[7] > Ref) || (B[2] > Ref && B[5] > Ref)) {
+    if (B[0] > Ref || B[7] > Ref || (B[2] > Ref && B[5] > Ref)) {
       break;
     }
   }
@@ -1139,7 +1195,7 @@ void FFL(int Speed, char select) {
   while (1) {
     PIDF(LeftBaseSpeed, RightBaseSpeed, PID_KP_Front, PID_KD_Front);
     ReadCalibrateF();
-    if ((F[0] > Ref && F[2] > Ref)) {
+    if (F[0] > Ref ) {
       break;
     }
   }
@@ -1177,7 +1233,7 @@ void BBL(int Speed, char select) {
   while (1) {
     PIDB(BackLeftBaseSpeed, BackRightBaseSpeed, PID_KP_Back, PID_KD_Back);
     ReadCalibrateB();
-    if ((B[0] > Ref && B[2] > Ref)) {
+    if (B[0] > Ref ) {
       break;
     }
   }
@@ -1215,7 +1271,7 @@ void FFR(int Speed, char select) {
   while (1) {
     PIDF(LeftBaseSpeed, RightBaseSpeed, PID_KP_Front, PID_KD_Front);
     ReadCalibrateF();
-    if ((F[5] > Ref && F[7] > Ref)) break;
+    if ( F[7] > Ref) break;
   }
   TrackSelectF(Speed, select);
 }
@@ -1248,7 +1304,7 @@ void BBR(int Speed, char select) {
   while (1) {
     PIDB(BackLeftBaseSpeed, BackRightBaseSpeed, PID_KP_Back, PID_KD_Back);
     ReadCalibrateB();
-    if ((B[5] > Ref && B[7] > Ref)) {
+    if ( B[7] > Ref) {
       break;
     }
   }
@@ -1466,7 +1522,7 @@ void GoStart(int LeftSpeed, int RightSpeed) {
     ReadCalibrateF();
     Motor(LeftSpeed, RightSpeed);
     if (F[0] < Ref && F[7] < Ref) {
-      Move(LeftSpeed, RightSpeed, 100);
+      Move(LeftSpeed, RightSpeed, 1);
       break;
     }
   }
@@ -1616,6 +1672,56 @@ void set_b(int num) {
 }
 
 
+void set_fc(int num) {
+  for (int i=0; i< num; i++) {
+    while (1) {
+      ReadCalibrateC();
+      delay(5);
+      if (C[1] > RefC && C[0] < RefC) {
+        Motor(-5, 15);
+      } else if (C[1] < RefC && C[0] > RefC) {
+        Motor(15, -5);
+      } else if (C[1] < RefC && C[0] < RefC) {
+        Motor(15, 15);
+      } else {
+        Motor(-1, -1);
+        break;
+      }
+    }
+    if (num > 1) {
+      Motor(-15, -15);
+      delay(50);
+      Motor(-1, -1);
+    }
+  }
+
+}
+
+void set_bc(int num) {
+  for (int i=0; i< num; i++) {
+    while (1) {
+      ReadCalibrateC();
+      delay(5);
+      if (C[1] > RefC && C[0] < RefC) {
+        Motor(5, -15);
+      } else if (C[1] < RefC && C[0] > RefC) {
+        Motor(-15, 5);
+      } else if (C[1] < RefC && C[0] < RefC) {
+        Motor(-15, -15);
+      } else {
+        Motor(1, 1);
+        break;
+      }
+    }
+    if (num > 1) {
+      Motor(15, 15);
+      delay(50);
+      Motor(1, 1);
+    }
+  }
+}
+
+
 void SerialPositionF() {
   while (1) {
   int pos = readPositionF(200, 50);
@@ -1644,6 +1750,182 @@ void SerialPositionFB() {
     Serial.println(posB);
     delay(100);
   }
+}
+
+void FFCL(int Speed,char select){
+int temp = set_position;
+set_position = set_positionL;
+ BaseSpeed = Speed;
+  InitialSpeed();
+  while(1){
+    PIDF(LeftBaseSpeed, RightBaseSpeed, PID_KP_Front, PID_KD_Front);
+    ReadCalibrateF();
+    if (F[0] > Ref) break;
+  }
+  TrackSelectF(Speed, select);
+  set_position = temp;
+}
+
+void FFCR(int Speed,char select){
+int temp = set_position;
+set_position = set_positionR;
+ BaseSpeed = Speed;
+  InitialSpeed();
+  while(1){
+    PIDF(LeftBaseSpeed, RightBaseSpeed, PID_KP_Front, PID_KD_Front);
+    ReadCalibrateF();
+    if (F[7] > Ref) break;
+  }
+  TrackSelectF(Speed, select);
+  set_position = temp;
+}
+
+
+//----------------------------------------------------------------------------------------- FFtimerCricleL ----------------------------------------------------------------------------------//
+void FFtimerCL(int Speed, int totalTime) {
+ int temp = set_position;
+  set_position = set_positionL;
+  FFtimer(Speed,totalTime);
+  set_position = temp;
+}
+//----------------------------------------------------------------------------------------- FFtimerCricleR ----------------------------------------------------------------------------------//
+void FFtimerCR(int Speed, int totalTime) {
+ int temp = set_position;
+  set_position = set_positionR;
+  FFtimer(Speed,totalTime);
+  set_position = temp;
+}
+
+void FFcmCL(int Speed, int distance){
+   int temp = set_position;
+  set_position = set_positionL;
+  FFcm(Speed,distance);
+  set_position = temp;
+}
+
+void FFcmCR(int Speed, int distance){
+  int temp = set_position;
+  set_position = set_positionR;
+  FFcm(Speed,distance);
+  set_position = temp;
+}
+
+//----------------------------------------------------------------------------------------- FFtimerCricleL ----------------------------------------------------------------------------------//
+void FFtimerCL(int Speed, int totalTime, char select) {
+ int temp = set_position;
+set_position = set_positionL;
+FFtimer(Speed,totalTime,select);
+set_position = temp;
+}
+//----------------------------------------------------------------------------------------- FFtimerCricleR ----------------------------------------------------------------------------------//
+void FFtimerCR(int Speed, int totalTime,char select) {
+ int temp = set_position;
+  set_position = set_positionR;
+  FFtimer(Speed,totalTime,select);
+  set_position = temp;
+}
+
+void FFcmCL(int Speed, int distance,char select){
+   int temp = set_position;
+  set_position = set_positionL;
+  FFcm(Speed,distance,select);
+  set_position = temp;
+}
+
+void FFcmCR(int Speed, int distance,char select){
+  int temp = set_position;
+  set_position = set_positionR;
+  FFcm(Speed,distance,select);
+  set_position = temp;
+}
+
+
+
+void BBCL(int Speed,char select){
+int temp = set_position;
+set_position = set_positionL;
+ BaseSpeed = Speed;
+  InitialSpeed();
+  while(1){
+    PIDB(BackLeftBaseSpeed, BackRightBaseSpeed, PID_KP_Back, PID_KD_Back);
+    ReadCalibrateB();
+    if (B[0] > Ref) break;
+  }
+  TrackSelectB(Speed, select);
+  set_position = temp;
+}
+
+void BBCR(int Speed,char select){
+int temp = set_position;
+set_position = set_positionR;
+ BaseSpeed = Speed;
+  InitialSpeed();
+  while(1){
+    PIDB(BackLeftBaseSpeed, BackRightBaseSpeed, PID_KP_Back, PID_KD_Back);
+    ReadCalibrateB();
+    if (B[7] > Ref) break;
+  }
+  TrackSelectB(Speed, select);
+  set_position = temp;
+}
+
+
+//----------------------------------------------------------------------------------------- FFtimerCricleL ----------------------------------------------------------------------------------//
+void BBtimerCL(int Speed, int totalTime) {
+ int temp = set_position;
+  set_position = set_positionL;
+  BBtimer(Speed,totalTime);
+  set_position = temp;
+}
+//----------------------------------------------------------------------------------------- FFtimerCricleR ----------------------------------------------------------------------------------//
+void BBtimerCR(int Speed, int totalTime) {
+ int temp = set_position;
+  set_position = set_positionR;
+  BBtimer(Speed,totalTime);
+  set_position = temp;
+}
+
+void BBcmCL(int Speed, int distance){
+   int temp = set_position;
+  set_position = set_positionL;
+  BBcm(Speed,distance);
+  set_position = temp;
+}
+
+void BBcmCR(int Speed, int distance){
+  int temp = set_position;
+  set_position = set_positionR;
+  BBcm(Speed,distance);
+  set_position = temp;
+}
+
+//----------------------------------------------------------------------------------------- FFtimerCricleL ----------------------------------------------------------------------------------//
+void BBtimerCL(int Speed, int totalTime,char select) {
+ int temp = set_position;
+  set_position = set_positionL;
+  BBtimer(Speed,totalTime,select);
+  set_position = temp;
+}
+//----------------------------------------------------------------------------------------- FFtimerCricleR ----------------------------------------------------------------------------------//
+void BBtimerCR(int Speed, int totalTime,char select) {
+ int temp = set_position;
+  set_position = set_positionR;
+  BBtimer(Speed,totalTime,select);
+  set_position = temp;
+}
+
+void BBcmCL(int Speed, int distance,char select){
+   int temp = set_position;
+  set_position = set_positionL;
+  BBcm(Speed,distance,select);
+  set_position = temp;
+}
+
+void BBcmCR(int Speed, int distance,char select){
+  int temp = set_position;
+  set_position = set_positionR;
+  BBcm(Speed,distance,select);
+  set_position = temp;
 }
 
 
@@ -1725,3 +2007,253 @@ void balanceb(int c) { BalanceB(c); }
 void setf(int c) { SetF(c); }
 void setb(int c) { SetB(c); }
 
+
+void ffcl(int Speed,char select){
+  FFCL(Speed,select);
+}
+
+void ffcr(int Speed,char select){
+  FFCR(Speed,select);
+}
+
+void fftimercl(int Speed, int totalTime){
+  FFtimerCL(Speed, totalTime);
+}
+
+void fftimercr(int Speed, int totalTime){
+  FFtimerCR(Speed, totalTime);
+}
+
+void ffcmcl(int Speed, int distance){
+  FFcmCL(Speed, distance);
+}
+
+void ffcmcr(int Speed, int distance){
+  FFcmCR(Speed, distance);
+}
+
+void fftimercl(int Speed, int totalTime,char select){
+  FFtimerCL(Speed, totalTime ,select);
+}
+
+void fftimercr(int Speed, int totalTime,char select){
+  FFtimerCR(Speed, totalTime ,select);
+}
+
+void ffcmcl(int Speed, int distance,char select){
+  FFcmCL(Speed, distance ,select);
+}
+
+void ffcmcr(int Speed, int distance,char select){
+  FFcmCR(Speed, distance ,select);
+}
+
+
+void bbcl(int Speed,char select){
+  BBCL(Speed,select);
+}
+
+void bbcr(int Speed,char select){
+  BBCR(Speed,select);
+}
+
+void bbtimercl(int Speed, int totalTime){
+  BBtimerCL(Speed, totalTime);
+}
+
+void bbtimercr(int Speed, int totalTime){
+  BBtimerCR(Speed, totalTime);
+}
+
+void bbcmcl(int Speed, int distance){
+  BBcmCL(Speed, distance);
+}
+
+void bbcmcr(int Speed, int distance){
+  BBcmCR(Speed, distance);
+}
+
+void bbtimercl(int Speed, int totalTime,char select){
+  BBtimerCL(Speed, totalTime,select);
+}
+
+void bbtimercr(int Speed, int totalTime,char select){
+  BBtimerCR(Speed, totalTime,select);
+}
+
+void bbcmcl(int Speed, int distance,char select){
+  BBcmCL(Speed, distance,select);
+}
+
+void bbcmcr(int Speed, int distance,char select){
+  BBcmCR(Speed, distance,select);
+}
+
+
+//---------------------
+
+void ffcirclel(int Speed,char select){
+  FFCL(Speed,select);
+}
+
+void ffcircler(int Speed,char select){
+  FFCR(Speed,select);
+}
+
+void fftimercirclel(int Speed, int totalTime){
+  FFtimerCL(Speed, totalTime);
+}
+
+void fftimercircler(int Speed, int totalTime){
+  FFtimerCR(Speed, totalTime);
+}
+
+void ffcmcirclel(int Speed, int distance){
+  FFcmCL(Speed, distance);
+}
+
+void ffcmcircler(int Speed, int distance){
+  FFcmCR(Speed, distance);
+}
+
+void fftimercirclel(int Speed, int totalTime,char select){
+  FFtimerCL(Speed, totalTime ,select);
+}
+
+void fftimercircler(int Speed, int totalTime,char select){
+  FFtimerCR(Speed, totalTime ,select);
+}
+
+void ffcmcirclel(int Speed, int distance,char select){
+  FFcmCL(Speed, distance ,select);
+}
+
+void ffcmcircler(int Speed, int distance,char select){
+  FFcmCR(Speed, distance ,select);
+}
+
+
+void bbcirclel(int Speed,char select){
+  BBCL(Speed,select);
+}
+
+void bbcircler(int Speed,char select){
+  BBCR(Speed,select);
+}
+
+void bbtimercirclel(int Speed, int totalTime){
+  BBtimerCL(Speed, totalTime);
+}
+
+void bbtimercircler(int Speed, int totalTime){
+  BBtimerCR(Speed, totalTime);
+}
+
+void bbcmcirclel(int Speed, int distance){
+  BBcmCL(Speed, distance);
+}
+
+void bbcmcircler(int Speed, int distance){
+  BBcmCR(Speed, distance);
+}
+
+void bbtimercirclel(int Speed, int totalTime,char select){
+  BBtimerCL(Speed, totalTime,select);
+}
+
+void bbtimercircler(int Speed, int totalTime,char select){
+  BBtimerCR(Speed, totalTime,select);
+}
+
+void bbcmcirclel(int Speed, int distance,char select){
+  BBcmCL(Speed, distance,select);
+}
+
+void bbcmcircler(int Speed, int distance,char select){
+  BBcmCR(Speed, distance,select);
+}
+
+
+//_______________
+
+
+void FFCircleL(int Speed,char select){
+  FFCL(Speed,select);
+}
+
+void FFCircleR(int Speed,char select){
+  FFCR(Speed,select);
+}
+
+void FFtimerCircleL(int Speed, int totalTime){
+  FFtimerCL(Speed, totalTime);
+}
+
+void FFtimerCircleR(int Speed, int totalTime){
+  FFtimerCR(Speed, totalTime);
+}
+
+void FFcmCircleL(int Speed, int distance){
+  FFcmCL(Speed, distance);
+}
+
+void FFcmCircleR(int Speed, int distance){
+  FFcmCR(Speed, distance);
+}
+
+void FFtimerCircleL(int Speed, int totalTime,char select){
+  FFtimerCL(Speed, totalTime ,select);
+}
+
+void FFtimerCircleR(int Speed, int totalTime,char select){
+  FFtimerCR(Speed, totalTime ,select);
+}
+
+void FFcmCircleL(int Speed, int distance,char select){
+  FFcmCL(Speed, distance ,select);
+}
+
+void FFcmCircleR(int Speed, int distance,char select){
+  FFcmCR(Speed, distance ,select);
+}
+
+
+void BBCircleL(int Speed,char select){
+  BBCL(Speed,select);
+}
+
+void BBCircleR(int Speed,char select){
+  BBCR(Speed,select);
+}
+
+void BBtimerCircleL(int Speed, int totalTime){
+  BBtimerCL(Speed, totalTime);
+}
+
+void BBtimerCircleR(int Speed, int totalTime){
+  BBtimerCR(Speed, totalTime);
+}
+
+void BBcmCircleL(int Speed, int distance){
+  BBcmCL(Speed, distance);
+}
+
+void BBcmCircleR(int Speed, int distance){
+  BBcmCR(Speed, distance);
+}
+
+void BBtimerCircleL(int Speed, int totalTime,char select){
+  BBtimerCL(Speed, totalTime,select);
+}
+
+void BBtimerCircleR(int Speed, int totalTime,char select){
+  BBtimerCR(Speed, totalTime,select);
+}
+
+void BBcmCircleL(int Speed, int distance,char select){
+  BBcmCL(Speed, distance,select);
+}
+
+void BBcmCircleR(int Speed, int distance,char select){
+  BBcmCR(Speed, distance,select);
+}

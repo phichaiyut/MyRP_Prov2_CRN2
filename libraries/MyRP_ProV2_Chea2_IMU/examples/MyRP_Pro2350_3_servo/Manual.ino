@@ -28,7 +28,7 @@
 // SetF(1);
 
 // set_f(จำนวนครั้งที่ต้องการจัดหุ่นยนต์ให้ตรง);
-// set_f(1);
+// set_f(3);
 
 // ---------- ด้านหลัง ----------
 // BalanceB(จำนวนครั้งที่ต้องการจัดหุ่นยนต์ให้ตรง);
@@ -40,6 +40,9 @@
 // set_b(จำนวนครั้งที่ต้องการจัดหุ่นยนต์ให้ตรง);
 // set_b(1);
 
+
+// set_cf(1); //ตั้งลำหุ่นโดยใช้เซนเซอรกลาง โดยเดินหน้า
+// set_cb(1); //ตั้งลำหุ่นโดยใช้เซนเซอรกลาง โดยถอยหลัง
 // ==========================================================
 
 lf(100);
@@ -123,8 +126,6 @@ lb(100);
  *   'c' || 'C' : เดินหน้าจนเซนเซอร์ใต้ล้อเจอเส้นแล้วหยุด
  *   'p' || 'P' : เดินหน้าจนเซนเซอร์แผงหน้าพ้นแยก
  *   'b' || 'B' : เดินหน้าจนเซนเซอร์แผงหลังเจอเส้น
- *   'z' : เซนเซอร์แผงหลังเลี้ยวซ้ายถอยหลัง (ล้อเดียว)
- *   'x' : เซนเซอร์แผงหลังเลี้ยวขวาถอยหลัง (ล้อเดียว)
  *   'a' || 'A': เดินหน้าจนเซนเซอร์ใต้ล้อเจอเส้น แล้วเลี้ยวซ้ายโดยใช้เซนเซอร์หลัง
  *   'd' || 'D': เดินหน้าจนเซนเซอร์ใต้ล้อเจอเส้น แล้วเลี้ยวขวาโดยใช้เซนเซอร์หลัง
 *   'g' || 'G': หยุดแบบใช้ไจโร
@@ -590,7 +591,6 @@ SetRobotAngle();
 🔹 กลุ่มที่ 1 : วิ่งตามเวลา (TIMER)
 ------------------------------------------------------------------------------
 
-
 ▶ วิ่งหน้า
 FFTG(Speed, totalTime);
 FFtG(Speed, totalTime);
@@ -656,3 +656,130 @@ BBcmGyroS(40, 25, 'c');   // วิ่งถอย 25 cm แล้วหยุ�
 
 
 */
+
+
+/*==============================================================================
+  Internal Circle Motion Functions (Core)
+
+  ฟังก์ชันภายในของไลบรารี ใช้สำหรับกำหนดการวิ่งแบบโค้ง (Circle Motion)
+  โดยเปลี่ยนค่า set_position เพื่อให้ PID วิ่งโค้งซ้ายหรือขวา
+
+  ┌───────────────────────────────────────────────────────────────────────────┐
+  │ Function                    Description                     Example        │
+  ├───────────────────────────────────────────────────────────────────────────┤
+  │ FFCL(Speed, select)         Forward Circle Left            FFCL(60,'g');  │
+  │ FFCR(Speed, select)         Forward Circle Right           FFCR(60,'g');  │
+  │---------------------------------------------------------------------------│
+  │ FFtimerCL(Speed, time)      Forward Circle Left            FFtimerCL(60,500); │
+  │                             (Time)                                          │
+  │ FFtimerCR(Speed, time)      Forward Circle Right           FFtimerCR(60,500); │
+  │                             (Time)                                          │
+  │---------------------------------------------------------------------------│
+  │ FFcmCL(Speed, distance)     Forward Circle Left            FFcmCL(60,20); │
+  │                             (Distance)                                      │
+  │ FFcmCR(Speed, distance)     Forward Circle Right           FFcmCR(60,20); │
+  │                             (Distance)                                      │
+  │---------------------------------------------------------------------------│
+  │ FFtimerCL(Speed, time,      Forward Circle Left            FFtimerCL(60,500,'g');
+  │           select)           (Time + Detect)                                │
+  │ FFtimerCR(Speed, time,      Forward Circle Right           FFtimerCR(60,500,'g');
+  │           select)           (Time + Detect)                                │
+  │---------------------------------------------------------------------------│
+  │ FFcmCL(Speed, distance,     Forward Circle Left            FFcmCL(60,20,'g'); │
+  │        select)              (Distance + Detect)                            │
+  │ FFcmCR(Speed, distance,     Forward Circle Right           FFcmCR(60,20,'g'); │
+  │        select)              (Distance + Detect)                            │
+  ├───────────────────────────────────────────────────────────────────────────┤
+  │ BBCL(Speed, select)         Backward Circle Left           BBCL(60,'g');  │
+  │ BBCR(Speed, select)         Backward Circle Right          BBCR(60,'g');  │
+  │---------------------------------------------------------------------------│
+  │ BBtimerCL(Speed, time)      Backward Circle Left           BBtimerCL(60,500); │
+  │                             (Time)                                          │
+  │ BBtimerCR(Speed, time)      Backward Circle Right          BBtimerCR(60,500); │
+  │                             (Time)                                          │
+  │---------------------------------------------------------------------------│
+  │ BBcmCL(Speed, distance)     Backward Circle Left           BBcmCL(60,20); │
+  │                             (Distance)                                      │
+  │ BBcmCR(Speed, distance)     Backward Circle Right          BBcmCR(60,20); │
+  │                             (Distance)                                      │
+  │---------------------------------------------------------------------------│
+  │ BBtimerCL(Speed, time,      Backward Circle Left           BBtimerCL(60,500,'g');
+  │           select)           (Time + Detect)                                │
+  │ BBtimerCR(Speed, time,      Backward Circle Right          BBtimerCR(60,500,'g');
+  │           select)           (Time + Detect)                                │
+  │---------------------------------------------------------------------------│
+  │ BBcmCL(Speed, distance,     Backward Circle Left           BBcmCL(60,20,'g'); │
+  │        select)              (Distance + Detect)                            │
+  │ BBcmCR(Speed, distance,     Backward Circle Right          BBcmCR(60,20,'g'); │
+  │        select)              (Distance + Detect)                            │
+  └───────────────────────────────────────────────────────────────────────────┘
+
+  Parameters
+    Speed      : Motor speed
+    time       : Time in milliseconds (ms)
+    distance   : Distance in centimeters (cm)
+    select     : Line detection condition
+
+  Notes
+    - CL = Circle Left
+    - CR = Circle Right
+    - FF = Forward
+    - BB = Backward
+    - These are internal library functions.
+    - Recommended for advanced users only.
+
+==============================================================================*/
+
+
+/*==============================================================================
+  Circle Motion Functions
+
+  ┌───────────────────────────────────────────────────────────────────────────┐
+  │ Function                              Example                             │
+  ├───────────────────────────────────────────────────────────────────────────┤
+  │ FFCircleL(Speed, select)              FFCircleL(60, 'g');                 │
+  │ FFCircleR(Speed, select)              FFCircleR(60, 'g');                 │
+  │---------------------------------------------------------------------------│
+  │ FFtimerCircleL(Speed, time)           FFtimerCircleL(60, 500);            │
+  │ FFtimerCircleR(Speed, time)           FFtimerCircleR(60, 500);            │
+  │---------------------------------------------------------------------------│
+  │ FFcmCircleL(Speed, distance)          FFcmCircleL(60, 20);                │
+  │ FFcmCircleR(Speed, distance)          FFcmCircleR(60, 20);                │
+  │---------------------------------------------------------------------------│
+  │ FFtimerCircleL(Speed, time, select)   FFtimerCircleL(60, 500, 'g');       │
+  │ FFtimerCircleR(Speed, time, select)   FFtimerCircleR(60, 500, 'g');       │
+  │---------------------------------------------------------------------------│
+  │ FFcmCircleL(Speed, distance, select)  FFcmCircleL(60, 20, 'g');           │
+  │ FFcmCircleR(Speed, distance, select)  FFcmCircleR(60, 20, 'g');           │
+  │===========================================================================│
+  │ BBCircleL(Speed, select)              BBCircleL(60, 'g');                 │
+  │ BBCircleR(Speed, select)              BBCircleR(60, 'g');                 │
+  │---------------------------------------------------------------------------│
+  │ BBtimerCircleL(Speed, time)           BBtimerCircleL(60, 500);            │
+  │ BBtimerCircleR(Speed, time)           BBtimerCircleR(60, 500);            │
+  │---------------------------------------------------------------------------│
+  │ BBcmCircleL(Speed, distance)          BBcmCircleL(60, 20);                │
+  │ BBcmCircleR(Speed, distance)          BBcmCircleR(60, 20);                │
+  │---------------------------------------------------------------------------│
+  │ BBtimerCircleL(Speed, time, select)   BBtimerCircleL(60, 500, 'g');       │
+  │ BBtimerCircleR(Speed, time, select)   BBtimerCircleR(60, 500, 'g');       │
+  │---------------------------------------------------------------------------│
+  │ BBcmCircleL(Speed, distance, select)  BBcmCircleL(60, 20, 'g');           │
+  │ BBcmCircleR(Speed, distance, select)  BBcmCircleR(60, 20, 'g');           │
+  └───────────────────────────────────────────────────────────────────────────┘
+
+  Parameters
+    Speed      : Motor speed
+    time       : Time (milliseconds)
+    distance   : Distance (centimeters)
+    select     : Line detection condition
+
+  Example
+    FFCircleL(60, 'g');              // Forward circle left until condition
+    FFtimerCircleR(80, 1000);        // Forward circle right for 1 second
+    FFcmCircleL(70, 30);             // Forward circle left for 30 cm
+    BBtimerCircleR(50, 800, 'L');    // Backward circle right for 800 ms
+                                     // then detect condition 'L'
+
+==============================================================================*/
+
