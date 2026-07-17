@@ -35,12 +35,12 @@ void SetRobotAngle() {
   current_degree = gyroZ();
 }
 
-float kpHold = 10.5;
-float kdHold = 5.5;
-float kpFHold = 10.5;
+float kpHold = 1.5;
+float kdHold = 1.2;
+float kpFHold = 1.5;
 float kdFHold = 5.2;
-float kpBHold = 10.5;
-float kdBHold = 5.2;
+float kpBHold = 1.5;
+float kdBHold = 1.2;
 float holdAngle = 0;
 float prevErrHold = 0;
 float prevErrHoldB = 0;
