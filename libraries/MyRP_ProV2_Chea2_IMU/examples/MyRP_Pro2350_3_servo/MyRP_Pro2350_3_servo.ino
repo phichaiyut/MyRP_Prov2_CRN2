@@ -1,16 +1,22 @@
 
-#include <my_rpProV2.h>
 #include <myrp_prov2_chea2.h>
 
 void setup() {
-  setup_rp2350_pro();
-  set_motor();
+  RobotSetup();
   Setting() ;
+
+  // *** DIAGNOSTIC: ยืนยันว่าบอร์ดโหลดค่า Kp/Kd ล่าสุดจริงหรือไม่ - ดูใน Serial Monitor ตอนบูต ***
+  Serial.println("---- KP/KD Forward table ----");
+  for (int i = 0; i <= SPD_100; i++) {
+    Serial.print("SPD idx "); Serial.print(i);
+    Serial.print(" -> Kp="); Serial.print(KP[i], 4);
+    Serial.print(" Kd="); Serial.println(KD[i], 4);
+  }
 
   //arm_up_close();  //--->> ยกแขนขึ้นหุบฝ่ามือเข้า
   // arm_down_open();
   arm_up_open();
-  SW();  //--->> คำสั่งรอกดปุ่ม
+  sw();  //--->> คำสั่งรอกดปุ่ม
 
 
   ////------------------------------------------------------------------------------>> รันคำสั่งต่าง ๆ ที่นี่
@@ -24,8 +30,8 @@ void setup() {
 }
 
 void loop() {
-  
-  SW();  //--->> คำสั่งรอกดปุ่ม
+  MotorStop();
+  sw();  //--->> คำสั่งรอกดปุ่ม
   Mission();
  
 }

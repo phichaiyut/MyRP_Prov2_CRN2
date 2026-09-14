@@ -1,3 +1,6 @@
+#ifndef MYRP_PROV2_SERVO_H
+#define MYRP_PROV2_SERVO_H
+
 #include <Servo.h>
 
 // กำหนดขาเซอร์โว
@@ -35,25 +38,25 @@ void S36_trim(int _s36) {
 }
 
 // ฟังก์ชันควบคุมเซอร์โว
-void Servo(int servo, int angle) {      
+void Servo(int servo, int angle) {
     if (servo == 39) {
-        Servo_39.attach(Servo39, 600, 2400);
-        Servo_39.write(constrain(angle,0,180));        
+        if (!Servo_39.attached()) Servo_39.attach(Servo39, 500, 2500);
+        Servo_39.write(constrain(angle,0,180));
     } else if (servo == 38) {
-        Servo_38.attach(Servo38, 600, 2400);
-        Servo_38.write(constrain(angle,0,180));        
-    } else if (servo == 37) { 
-        Servo_37.attach(Servo37, 600, 2400);
-        Servo_37.write(constrain(angle,0,180));        
+        if (!Servo_38.attached()) Servo_38.attach(Servo38, 500, 2500);
+        Servo_38.write(constrain(angle,0,180));
+    } else if (servo == 37) {
+        if (!Servo_37.attached()) Servo_37.attach(Servo37, 500, 2500);
+        Servo_37.write(constrain(angle,0,180));
     } else if (servo == 36) {
-        Servo_36.attach(Servo36, 600, 2400);
-        Servo_36.write(constrain(angle+Servo_tim36,0,180));      
+        if (!Servo_36.attached()) Servo_36.attach(Servo36, 500, 2500);
+        Servo_36.write(constrain(angle+Servo_tim36,0,180));
     } else if (servo == 35) {
-        Servo_35.attach(Servo35, 600, 2400);
-        Servo_35.write(constrain((180 - angle)-Servo_tim35,0,180));     
+        if (!Servo_35.attached()) Servo_35.attach(Servo35, 500, 2500);
+        Servo_35.write(constrain((180 - angle)-Servo_tim35,0,180));
     } else if (servo == 34) {
-        Servo_34.attach(Servo34, 600, 2400);
-        Servo_34.write(constrain(angle+Servo_tim34,0,180) );   
+        if (!Servo_34.attached()) Servo_34.attach(Servo34, 500, 2500);
+        Servo_34.write(constrain(angle+Servo_tim34,0,180) );
     }
 }
 
@@ -116,7 +119,7 @@ void Servo(int x, int y, int z) {
   MotorStop();
   int a[] = {x, y, z}, s[] = {Servo36, Servo34, Servo35};
   for (int i = 0; i < 3; i++) Servo(s[i], pos[i] = a[i]);
-  delay(100);
+  delay(20);
 }
 
 void Servo(int target1, int target2, int target3, int spd) {
@@ -133,7 +136,7 @@ void Servo(int target1, int target2, int target3, int spd) {
     delay(spd);
   }
 
-  delay(100);
+  delay(20);
 }
 
 void armupdown(int x, int spd) {
@@ -152,4 +155,6 @@ void arm_left_right(int l, int r) {
   Servo(Servo34, pos[1] = l);
   Servo(Servo35,  pos[2] = r);
 }
+
+#endif
 

@@ -1,5 +1,5 @@
 void Setting() {
- 
+ set_Freq("Coreless_Motors");
   RobotSetupSpeed();
   /******************** CALIBRATION ********************/
 
@@ -23,10 +23,12 @@ void Setting() {
   SetTurnSpeed(60);  // ความเร็วเลี้ยวหุ่น (l L ) (r R)
 
 
-  TurnSpeedLeft(10, 100, 60);   // เลี้ยวซ้าย (q Q)
-  TurnSpeedRight(100, 10, 60);  // เลี้ยวขวา (e E)
+  TurnSpeedLeft(15, 100, 60);   // เลี้ยวซ้าย (q Q)
+  TurnSpeedRight(100, 15, 60);  // เลี้ยวขวา (e E)
 
-
+TurnBackSpeedLeft(15, 80, 60);   // เลี้ยวซ้าย (q Q)
+  TurnBackSpeedRight(80, 15, 60);  // เลี้ยวขวา (e E)
+  
   ModeSpdPID(0, 100, -5);  // โหมดควบคุมความเร็ว
   // SetRobotPID(0.014, 0.04);  // PID หลัก (ยังไม่ใช้)
 
@@ -90,7 +92,6 @@ void SetKpKdBack() {
   Set_KP_KD_Back(SPD_90,  0.031, 0.62);  // ความเร็ว 90
   Set_KP_KD_Back(SPD_100, 0.033, 0.66);  // ความเร็ว 100
 }
-
 // ==================== Balance เดินหน้า ====================
 
 void SetBalanceSpeedForward() {
