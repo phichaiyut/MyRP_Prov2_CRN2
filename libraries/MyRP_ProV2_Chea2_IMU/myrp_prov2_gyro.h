@@ -682,6 +682,22 @@ void BackCenterG() {
   }
 }
 
+void ToFrontG() {
+  while (1) {
+    RunG(tctL, tctR);
+    ReadCalibrateF();
+    if (F[1] > Ref || F[2] > Ref || F[3] > Ref || F[4] > Ref || F[5] > Ref || F[6] > Ref) break;
+  }
+}
+
+void ToBackG() {
+  while (1) {
+    RunGB(bctL, bctR);
+    ReadCalibrateB();
+    if (B[1] > Ref || B[2] > Ref || B[3] > Ref || B[4] > Ref || B[5] > Ref || B[6] > Ref) break;
+  }
+}
+
 /* ---------- track select (gyro) ---------- */
 
 void TrackSelectG(int spd, char select) {
@@ -755,12 +771,22 @@ void TrackSelectG(int spd, char select) {
         break;
       }
     }
-  } else if (select == 's' || select == 'S') {
+  } else if (select == 's') {
     Motor(-10, -10);
     delay(10);
     Motor(-1, -1);
     delay(1);
     MotorStop();
+  } else if (select == 'S') {
+    ToFrontG();
+    Motor(-10, -10);
+    delay(10);
+    Motor(-1, -1);
+    delay(1);
+    MotorStop();
+  } else if (select == 'G') {
+    ToFrontG();
+    SetG(spd);
   } else {
     SetG(100);
   }
@@ -837,12 +863,22 @@ void TrackSelectGB(int spd, char select) {
         break;
       }
     }
-  } else if (select == 's' || select == 'S') {
+  } else if (select == 's') {
     Motor(10, 10);
     delay(10);
     Motor(1, 1);
     delay(1);
     MotorStop();
+  } else if (select == 'S') {
+    ToBackG();
+    Motor(10, 10);
+    delay(10);
+    Motor(1, 1);
+    delay(1);
+    MotorStop();
+  } else if (select == 'G') {
+    ToBackG();
+    SetG(100);
   } else {
     SetG(100);
   }

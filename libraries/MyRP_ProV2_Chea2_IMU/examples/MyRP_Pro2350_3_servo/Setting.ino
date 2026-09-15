@@ -28,7 +28,13 @@ void Setting() {
 
 TurnBackSpeedLeft(15, 80, 60);   // เลี้ยวซ้าย (q Q)
   TurnBackSpeedRight(80, 15, 60);  // เลี้ยวขวา (e E)
-  
+
+  TurnSpeedLeftBackF(15, 80, 60);   // เลี้ยวล้อเดียวถอยหลัง เช็คเซนเซอร์หน้า (TurnLeftBackF)
+  TurnSpeedRightBackF(80, 15, 60);  // เลี้ยวล้อเดียวถอยหลัง เช็คเซนเซอร์หน้า (TurnRightBackF)
+
+  TurnSpeedLeftBackB(15, 80, 60);   // เลี้ยวล้อเดียวถอยหลัง เช็คเซนเซอร์หลัง (TurnLeftBackB)
+  TurnSpeedRightBackB(80, 15, 60);  // เลี้ยวล้อเดียวถอยหลัง เช็คเซนเซอร์หลัง (TurnRightBackB)
+
   ModeSpdPID(0, 100, -5);  // โหมดควบคุมความเร็ว
   // SetRobotPID(0.014, 0.04);  // PID หลัก (ยังไม่ใช้)
 
