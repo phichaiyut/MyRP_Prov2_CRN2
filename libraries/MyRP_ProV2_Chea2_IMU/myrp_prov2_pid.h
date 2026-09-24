@@ -890,13 +890,13 @@ void spinl_B(int speed) {
   Motor(-speed, speed);
   delay(60);
 
-  // เลือกเซนเซอร์ตาม tspd แบบเดียวกับ spinl() แต่ index บนอาเรย์ B[] ซึ่งเรียง
+  // เลือกเซนเซอร์ตามความเร็ว speed แบบเดียวกับ spinl() แต่ index บนอาเรย์ B[] ซึ่งเรียง
   // กลับด้าน (B_PIN เรียงย้อนจาก F_PIN) ตำแหน่งเซนเซอร์จริงจึงตรงกับที่ spinl()
   // ใช้ (F[1],F[2],F[3],F[0]) แค่แปลงเป็น index ของ B[] คือ B[6],B[5],B[4],B[7]
   int sensorIdx;
-  if (tspd >= 80) sensorIdx = 6;
-  else if (tspd <= 50) sensorIdx = 4;
-  else if (tspd <= 70) sensorIdx = 5;
+  if (speed >= 80) sensorIdx = 6;
+  else if (speed <= 50) sensorIdx = 4;
+  else if (speed <= 70) sensorIdx = 5;
   else sensorIdx = 6;
 
   while (1) {
@@ -934,9 +934,9 @@ void spinl2_B(int speed) {
   Motor(-speed, speed);
   delay(60);
   int sensorIdx;
-  if (tspd >= 80) sensorIdx = 6;
-  else if (tspd <= 50) sensorIdx = 4;
-  else if (tspd <= 70) sensorIdx = 5;
+  if (speed >= 80) sensorIdx = 6;
+  else if (speed <= 50) sensorIdx = 4;
+  else if (speed <= 70) sensorIdx = 5;
   else sensorIdx = 6;
   while (1) {
     ReadCalibrateB();
@@ -970,13 +970,13 @@ void spinr_B(int speed) {
   Motor(speed, -speed);
   delay(60);
 
-  // เลือกเซนเซอร์ตาม tspd แบบเดียวกับ spinr() แต่ index บนอาเรย์ B[] ซึ่งเรียง
+  // เลือกเซนเซอร์ตามความเร็ว speed แบบเดียวกับ spinr() แต่ index บนอาเรย์ B[] ซึ่งเรียง
   // กลับด้าน ตำแหน่งเซนเซอร์จริงตรงกับที่ spinr() ใช้ (F[6],F[5],F[4],F[7])
   // แปลงเป็น index ของ B[] คือ B[1],B[2],B[3],B[0]
   int sensorIdx;
-  if (tspd >= 80) sensorIdx = 1;
-  else if (tspd <= 50) sensorIdx = 3;
-  else if (tspd <= 70) sensorIdx = 2;
+  if (speed >= 80) sensorIdx = 1;
+  else if (speed <= 50) sensorIdx = 3;
+  else if (speed <= 70) sensorIdx = 2;
   else sensorIdx = 1;
 
   while (1) {
@@ -1009,9 +1009,9 @@ void spinr2_B(int speed) {
   Motor(speed, -speed);
   delay(60);
   int sensorIdx;
-  if (tspd >= 80) sensorIdx = 1;
-  else if (tspd <= 50) sensorIdx = 3;
-  else if (tspd <= 70) sensorIdx = 2;
+  if (speed >= 80) sensorIdx = 1;
+  else if (speed <= 50) sensorIdx = 3;
+  else if (speed <= 70) sensorIdx = 2;
   else sensorIdx = 1;
   while (1) {
     ReadCalibrateB();
@@ -1026,7 +1026,7 @@ void spinr2_B(int speed) {
     if (B[sensorIdx] >= Ref) {
       Motor(-speed, speed);
       delay(5);
-      lb(tspd);
+      lb(speed);
       MotorStop();
       break;
     }
@@ -2412,7 +2412,7 @@ void ffcr(int Speed, char select) {
   while (1) {
     PIDF(LeftBaseSpeed, RightBaseSpeed, PID_KP_Front, PID_KD_Front);
     ReadCalibrateF();
-    if (F[7] > Ref || F[1] < Ref && F[2] < Ref && F[3] < Ref && F[4] < Ref && F[5] < Ref && F[6] < Ref) break;
+    if (F[7] > Ref) break;
   }
   TrackSelectF(Speed, select);
   set_position = temp;
