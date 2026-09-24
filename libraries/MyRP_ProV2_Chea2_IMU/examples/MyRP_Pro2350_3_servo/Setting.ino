@@ -23,17 +23,21 @@ void Setting() {
   SetTurnSpeed(60);  // ความเร็วเลี้ยวหุ่น (l L ) (r R)
 
 
-  TurnSpeedLeft(15, 100, 60);   // เลี้ยวซ้าย (q Q)
-  TurnSpeedRight(100, 15, 60);  // เลี้ยวขวา (e E)
+  // ค่าล้อใส่เครื่องหมายตรง ๆ (ลบ = ล้อหมุนถอย) ส่งเข้า Motor() โดยไม่กลับเครื่องหมายในไลบรารี
+  TurnSpeedLeft(-15, 100, 60);   // เลี้ยวซ้าย (q Q)
+  TurnSpeedRight(100, -15, 60);  // เลี้ยวขวา (e E)
 
-TurnBackSpeedLeft(15, 80, 60);   // เลี้ยวซ้าย (q Q)
-  TurnBackSpeedRight(80, 15, 60);  // เลี้ยวขวา (e E)
+  TurnBackSpeedLeft(-15, 80, 60);   // เลี้ยวซ้าย (q Q)
+  TurnBackSpeedRight(80, -15, 60);  // เลี้ยวขวา (e E)
 
-  TurnSpeedLeftBackF(15, 80, 60);   // เลี้ยวล้อเดียวถอยหลัง เช็คเซนเซอร์หน้า (TurnLeftBackF)
-  TurnSpeedRightBackF(80, 15, 60);  // เลี้ยวล้อเดียวถอยหลัง เช็คเซนเซอร์หน้า (TurnRightBackF)
+  TurnSpeedLeftBackF(15, 80, 60);   // เลี้ยวล้อเดียวถอยหลัง เช็คเซนเซอร์หน้า (TurnLeftBackF) ฟังก์ชันนี้ยังกลับเครื่องหมายล้อขวาในไลบรารี
+  TurnSpeedRightBackF(-80, 15, 60); // เลี้ยวล้อเดียวถอยหลัง เช็คเซนเซอร์หน้า (TurnRightBackF)
 
-  TurnSpeedLeftBackB(15, 80, 60);   // เลี้ยวล้อเดียวถอยหลัง เช็คเซนเซอร์หลัง (TurnLeftBackB)
-  TurnSpeedRightBackB(80, 15, 60);  // เลี้ยวล้อเดียวถอยหลัง เช็คเซนเซอร์หลัง (TurnRightBackB)
+  TurnSpeedLeftBackB(15, -80, 60);  // เลี้ยวล้อเดียวถอยหลัง เช็คเซนเซอร์หลัง (TurnLeftBackB)
+  TurnSpeedRightBackB(-80, 15, 60); // เลี้ยวล้อเดียวถอยหลัง เช็คเซนเซอร์หลัง (TurnRightBackB)
+
+  set_brake_fc(20, 30);  // การเบรกตอนเดินหน้า (ff, fc)
+  set_brake_bc(10, 30);  // การเบรกตอนถอยหลัง (bf, bc)
 
   ModeSpdPID(0, 100, -5);  // โหมดควบคุมความเร็ว
   // SetRobotPID(0.014, 0.04);  // PID หลัก (ยังไม่ใช้)

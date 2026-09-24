@@ -392,6 +392,27 @@ lb(100);
 // spinDegree(deg);
 // ตัวอย่าง: spinDegree(-90);    // หมุนซ้าย 90 องศา
 //
+
+// ▶ หมุน/เลี้ยวไปยัง "ทิศสัมบูรณ์" (อ้างอิงจากตอน resetAngles) เช่น 0, 90, 180, 270, 360
+// ----------------------------------------------------------------------------
+// spindirection(direction);        spindirection(speed, direction);      // หมุนอยู่กับที่ (default speed = 30)
+// turndirection(direction);        turndirection(speed, direction);      // เลี้ยวล้อเดียว (เดินหน้า)
+// turndirectionb(direction);       turndirectionb(speed, direction);     // เลี้ยวล้อเดียว (ถอยหลัง)
+// ตัวอย่าง: spindirection(90);   // หันไปทิศ 90° ไม่ว่าตอนนี้หันอยู่ทิศไหน
+// relativeToDirection(direction);  // คืนมุมสัมพัทธ์ที่ต้องหมุน (-180..180) ไปยังทิศนั้น
+// SetDirectionG(direction);        // ตั้งทิศเป้าหมายให้ RunG/RunGB วิ่งตรง (แทน current_degree)
+//
+// ▶ ล็อกทิศสัมบูรณ์ระหว่างวิ่ง: เติมพารามิเตอร์ direction ต่อท้ายสุดของฟังก์ชัน *g
+// fftimerg(speed, time, direction);            bbtimerg(speed, time, direction);
+// fftimerg(speed, time, 'select', direction);  bbtimerg(speed, time, 'select', direction);   // fftg/bbtg ก็มีรุ่นนี้
+// ffcmg(speed, cm, direction);                 bbcmg(speed, cm, direction);
+// ffcmg(speed, cm, 'select', direction);       bbcmg(speed, cm, 'select', direction);
+// ffcmgs(speed, cm, direction);                bbcmgs(speed, cm, direction);
+// ffcmgs(speed, cm, 'select', direction);      bbcmgs(speed, cm, 'select', direction);
+// ffbg(speed, 'select', direction);            bbbg(speed, 'select', direction);
+//
+// ▶ หน่วงเบรก (ตั้งใน Setting.ino): set_brake_fc(ff, fc);  set_brake_bc(bf, bc);
+//
 // ============================================================================
 
 
