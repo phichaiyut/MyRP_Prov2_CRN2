@@ -395,12 +395,21 @@ lb(100);
 
 // ▶ หมุน/เลี้ยวไปยัง "ทิศสัมบูรณ์" (อ้างอิงจากตอน resetAngles) เช่น 0, 90, 180, 270, 360
 // ----------------------------------------------------------------------------
-// spindirection(direction);        spindirection(speed, direction);      // หมุนอยู่กับที่ (default speed = 30)
-// turndirection(direction);        turndirection(speed, direction);      // เลี้ยวล้อเดียว (เดินหน้า)
+// spindirection(direction);        spindirection(speed, direction);      // หมุนอยู่กับที่ (default speed = maxSpd ของ SetGyroSpin)
+// turndirection(direction);        turndirection(speed, direction);      // เลี้ยวล้อเดียว (เดินหน้า, default = maxSpd ของ SetGyroTurn)
 // turndirectionb(direction);       turndirectionb(speed, direction);     // เลี้ยวล้อเดียว (ถอยหลัง)
+// turndirection_none(direction);   turndirection_none(speed, direction);  // เลี้ยวล้อเดียวแบบไม่หยุด (default speed = 50)
+// turndirectionb_none(direction);  turndirectionb_none(speed, direction); // เลี้ยวล้อเดียวถอยหลังแบบไม่หยุด
 // ตัวอย่าง: spindirection(90);   // หันไปทิศ 90° ไม่ว่าตอนนี้หันอยู่ทิศไหน
 // relativeToDirection(direction);  // คืนมุมสัมพัทธ์ที่ต้องหมุน (-180..180) ไปยังทิศนั้น
 // SetDirectionG(direction);        // ตั้งทิศเป้าหมายให้ RunG/RunGB วิ่งตรง (แทน current_degree)
+//
+// ▶ ปรับค่าไจโร (ใส่ใน Setting.ino)
+// SetGyroTurn(kp, kd, maxSpd, minSpd, smallAngle, stopThr);   // turndegree / turndegreeb
+// SetGyroSpin(kp, kd, maxSpd, minSpd, smallAngle, stopThr);   // spindegree
+// SetGyroRun(kp, kd);   SetGyroRunB(kp, kd);                  // RunG / RunGB วิ่งตรง
+// ModeSpdGyro(mode, max, min);   ModeSpdGyro(modeF, modeB, max, min);
+//   mode 0 = 0..max | 1 = min..max | 2 = -Speed..Speed | 3 = ..max | 4 = 0..Speed
 //
 // ▶ ล็อกทิศสัมบูรณ์ระหว่างวิ่ง: เติมพารามิเตอร์ direction ต่อท้ายสุดของฟังก์ชัน *g
 // fftimerg(speed, time, direction);            bbtimerg(speed, time, direction);

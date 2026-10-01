@@ -42,6 +42,23 @@ void Setting() {
   ModeSpdPID(0, 100, -5);  // โหมดควบคุมความเร็ว
   // SetRobotPID(0.014, 0.04);  // PID หลัก (ยังไม่ใช้)
 
+  /******************** GYRO SPEED MODE ********************/
+  // เลือกเปิดใช้ทีละบรรทัด (mode, max, min)
+  // ModeSpdGyro(0, 100, -0);    // 0 = 0..max        ล้อติดลบ → min
+  // ModeSpdGyro(1, 100, -100);  // 1 = min..max
+  ModeSpdGyro(2, 100, -10);      // 2 = -Speed..Speed ถอยล้อได้เต็มที่ (ค่าเดิมของบอร์ดนี้)
+  // ModeSpdGyro(3, 100, -10);   // 3 = ..max          ล้อติดลบ → -Speed
+  // ModeSpdGyro(4, 100, 0);     // 4 = 0..Speed      ไม่ถอยล้อ
+  // ModeSpdGyro(2, 4, 100, -5); // แยกโหมด (เดินหน้า, ถอยหลัง, max, min)
+
+  /******************** GYRO PID CONFIG ********************/
+  // (kp, kd, maxSpd, minSpd, smallAngle, stopThr)
+  SetGyroTurn(1.2, 0.6, 30, 10, 20.0, 1.0);  // เลี้ยวล้อเดียวด้วยไจโร (turndegree / turndegreeb)
+  SetGyroSpin(0.9, 0.6, 30, 10, 10.0, 1.0);  // หมุนตัวอยู่กับที่ด้วยไจโร (spindegree)
+  // (kp, kd)
+  SetGyroRun(2.5, 1.5);   // เดินหน้าตรงด้วยไจโร (RunG)
+  SetGyroRunB(2.5, 1.5);  // ถอยหลังตรงด้วยไจโร (RunGB)
+
   /******************** LINE POSITION ********************/
   set_position_line(2500);  // 0–5000 | 1000=ซ้าย 2500=กลาง 4000=ขวา
   set_position_line_l(500);  // 0–5000 | วิ่งโค้งซ้าย
