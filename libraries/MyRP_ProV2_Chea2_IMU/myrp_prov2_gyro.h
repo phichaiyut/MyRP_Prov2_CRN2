@@ -954,8 +954,8 @@ void TrackSelectG(int spd, char select) {
       RunG(tctL, tctR);
       ReadCalibrateB();
       if ((B[0] > Ref || B[7] > Ref)) {
-        Motor(-10, -10);
-        delay(10);
+        Motor(-tctL, -tctR);
+        delay(tct_delay_break);
         Motor(-1, -1);
         delay(1);
         MotorStop();
@@ -964,21 +964,21 @@ void TrackSelectG(int spd, char select) {
       }
     }
   } else if (select == 's') {
-    Motor(-10, -10);
-    delay(10);
+    Motor(-spd, -spd);
+    delay(delay_break_f);
     Motor(-1, -1);
     delay(1);
     MotorStop();
   } else if (select == 'S') {
     ToFrontG();
-    Motor(-10, -10);
-    delay(10);
+    Motor(-tctL, -tctR);
+    delay(tct_delay_break);
     Motor(-1, -1);
     delay(1);
     MotorStop();
   } else if (select == 'G') {
     ToFrontG();
-    SetG(spd);
+    SetG(tct_delay_break);
   } else {
     SetG(100);
   }
@@ -1024,7 +1024,7 @@ void TrackSelectGB(int spd, char select) {
       ReadCalibrateC();
       if (C[CCL] >= RefC || C[CCR] >= RefC) {
         Motor(spd, spd);
-        delay(5);
+        delay(delay_break_b);
         MotorStop();
         BZoff();
         break;
@@ -1046,8 +1046,8 @@ void TrackSelectGB(int spd, char select) {
       RunGB(bctL, bctR);
       ReadCalibrateB();
       if ((B[0] > Ref || B[7] > Ref)) {
-        Motor(10, 10);
-        delay(10);
+        Motor(bctL, bctR);
+        delay(bct_delay_break);
         Motor(1, 1);
         delay(1);
         MotorStop();
@@ -1056,23 +1056,23 @@ void TrackSelectGB(int spd, char select) {
       }
     }
   } else if (select == 's') {
-    Motor(10, 10);
-    delay(10);
+    Motor(spd, spd);
+    delay(delay_break_b);
     Motor(1, 1);
     delay(1);
     MotorStop();
   } else if (select == 'S') {
     ToBackG();
-    Motor(10, 10);
-    delay(10);
+    Motor(bctL, bctR);
+    delay(bct_delay_break);
     Motor(1, 1);
     delay(1);
     MotorStop();
   } else if (select == 'G') {
     ToBackG();
-    SetG(100);
+    SetG(bct_delay_break);
   } else {
-    SetG(100);
+    SetG(spd);
   }
 }
 
