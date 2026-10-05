@@ -978,7 +978,7 @@ void TrackSelectG(int spd, char select) {
     MotorStop();
   } else if (select == 'G') {
     ToFrontG();
-    SetG(tct_delay_break);
+    SetG(100);
   } else {
     SetG(100);
   }
@@ -1070,9 +1070,9 @@ void TrackSelectGB(int spd, char select) {
     MotorStop();
   } else if (select == 'G') {
     ToBackG();
-    SetG(bct_delay_break);
+    SetG(100);
   } else {
-    SetG(spd);
+    SetG(100);
   }
 }
 
