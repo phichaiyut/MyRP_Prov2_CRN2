@@ -95,11 +95,15 @@ void MotorShot(){
 int BaseSpeed, LeftBaseSpeed, RightBaseSpeed, BackLeftBaseSpeed, BackRightBaseSpeed;
 float PID_KP_Front, PID_KD_Front;
 float PID_KP_Back, PID_KD_Back;
+int delay_break_f = 30;
+int delay_break_b = 30;
 // int LastError_F, LastError_B;
 int L[10], R[10];
 int BL[10], BR[10];
 float KP[10], KD[10];
 float KP_Back[10], KD_Back[10];
+int delay_break_f_table[10] = {30, 30, 30, 30, 30, 30, 30, 30, 30, 30};
+int delay_break_b_table[10] = {30, 30, 30, 30, 30, 30, 30, 30, 30, 30};
 
 // ��˹� index ���ӧ���
 #define SPD_10 0
@@ -133,6 +137,11 @@ void Set_KP_KD_Back(int ch, float kp,float kd){
   KD_Back[ch] = kd;
 }
 
+void SetDelayBreak(int ch, int delay_f, int delay_b) {
+  delay_break_f_table[ch] = delay_f;
+  delay_break_b_table[ch] = delay_b;
+}
+
 
 // เลือกชุดค่าความเร็ว/PID ตามช่วงของ BaseSpeed (ปัดขึ้นเป็นสิบ เช่น 35 ใช้ชุดของ 40)
 // เดิมเป็น if/else 10 ชุดที่โครงสร้างเหมือนกันทุกอัน ต่างแค่ index ตาราง จึงรวมเป็นสูตรเดียว:
@@ -148,6 +157,8 @@ void InitialSpeed() {
   PID_KD_Front = KD[idx];
   PID_KP_Back = KP_Back[idx];   // backward PID
   PID_KD_Back = KD_Back[idx];
+  delay_break_f = delay_break_f_table[idx];
+  delay_break_b = delay_break_b_table[idx];
 }
 
 void fd(int Speed, int time_ms) {

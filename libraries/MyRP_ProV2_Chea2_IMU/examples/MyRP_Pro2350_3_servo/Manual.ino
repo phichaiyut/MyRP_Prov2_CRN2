@@ -421,6 +421,7 @@ lb(100);
 // ffbg(speed, 'select', direction);            bbbg(speed, 'select', direction);
 //
 // ▶ หน่วงเบรก (ตั้งใน Setting.ino): set_brake_fc(ff, fc);  set_brake_bc(bf, bc);
+// ▶ เวลาเบรกตอนหยุดที่เส้น ตามความเร็ว (ch = SPD_10 ... SPD_100): SetDelayBreak(ch, f, b);  // f=เดินหน้า b=ถอยหลัง (ms)
 //
 // ============================================================================
 
