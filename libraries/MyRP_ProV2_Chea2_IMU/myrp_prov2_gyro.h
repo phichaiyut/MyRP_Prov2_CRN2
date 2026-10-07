@@ -32,7 +32,11 @@ float run_Kdb = 1.5f;
 
 void resetAngles() {
   my.resetAngles();
-  current_degree = my.gyro('z');
+  float sum = 0;
+  for (int i = 0; i < 5; i++) {
+    sum += my.gyro('z');
+  }
+  current_degree = sum / 5.0f;
   previous_errorG = 0;
   previous_errorGB = 0;
 }
