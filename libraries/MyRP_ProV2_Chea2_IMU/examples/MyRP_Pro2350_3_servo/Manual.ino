@@ -162,10 +162,10 @@ lb(100);
 // FFdS(speed, 'คำสั่งทางแยก', dist);
 
 // เจอ / ไม่เจอเส้น
-// FFWhite(speed, 'คำสั่งทางแยก'); 
-// FFBlack(speed, 'คำสั่งทางแยก'); 
-// FFW(speed, 'คำสั่งทางแยก'); 
-// FFB(speed, 'คำสั่งทางแยก'); 
+// FFWhite(speed, 'คำสั่งทางแยก');
+// FFBlack(speed, 'คำสั่งทางแยก');
+// FFW(speed, 'คำสั่งทางแยก');
+// FFB(speed, 'คำสั่งทางแยก');
 
 // ===== LINE FOLLOW PID : BACKWARD =====
 
@@ -183,29 +183,29 @@ lb(100);
 // BBd(speed, 'คำสั่งทางแยก', dist);
 
 // เจอ / ไม่เจอเส้น
-// BBWhite(speed, 'คำสั่งทางแยก'); 
-// BBBlack(speed, 'คำสั่งทางแยก'); 
-// BBW(speed, 'คำสั่งทางแยก'); 
-// BBB(speed, 'คำสั่งทางแยก'); 
+// BBWhite(speed, 'คำสั่งทางแยก');
+// BBBlack(speed, 'คำสั่งทางแยก');
+// BBW(speed, 'คำสั่งทางแยก');
+// BBB(speed, 'คำสั่งทางแยก');
 
 // ===== LINE FOLLOW PID : TIMER =====
 
 // ไม่มีคำสั่ง
-// FFtimer(speed, time); 
-// BBtimer(speed, time); 
-// FFT(speed, time); 
-// BBT(speed, time); 
+// FFtimer(speed, time);
+// BBtimer(speed, time);
+// FFT(speed, time);
+// BBT(speed, time);
 
 // มีคำสั่ง
-// FFtimer(speed, time, 'คำสั่งทางแยก'); 
-// BBtimer(speed, time, 'คำสั่งทางแยก'); 
-// FFT(speed, time, 'คำสั่งทางแยก'); 
-// BBT(speed, time, 'คำสั่งทางแยก'); 
+// FFtimer(speed, time, 'คำสั่งทางแยก');
+// BBtimer(speed, time, 'คำสั่งทางแยก');
+// FFT(speed, time, 'คำสั่งทางแยก');
+// BBT(speed, time, 'คำสั่งทางแยก');
 
 
 // ไม่มีคำสั่ง
-// FFcm(speed, time); 
-// BBcm(speed, time); 
+// FFcm(speed, time);
+// BBcm(speed, time);
 
 // มีคำสั่ง
 // FFcm(speed, time, 'คำสั่งทางแยก');
@@ -227,7 +227,7 @@ lb(100);
 // ===== ARM & SERVO COMMANDS =====
 
 // แขนกล
-//แบบใส่องศา servo 
+//แบบใส่องศา servo
 // armupdown(90) ;   //armupdown(องศา) ;  //ยกขึ้นลง
 // arm_left_right(90,90); //arm_left_right(องศาซ้าย,องศาขวา); //ซ้าย  ขวา
 
@@ -412,6 +412,7 @@ lb(100);
 //   mode 0 = 0..max | 1 = min..max | 2 = -Speed..Speed | 3 = ..max | 4 = 0..Speed
 //
 // ▶ ล็อกทิศสัมบูรณ์ระหว่างวิ่ง: เติมพารามิเตอร์ direction ต่อท้ายสุดของฟังก์ชัน *g
+// dir = ทิศที่หุ่นเคลื่อนที่ไป ทั้งเดินหน้าและถอยหลัง เช่น bbcmg(speed, cm, 'p', 180) = ถอยไปทิศ 180 (หน้าหันทิศ 0)
 // fftimerg(speed, time, direction);            bbtimerg(speed, time, direction);
 // fftimerg(speed, time, 'select', direction);  bbtimerg(speed, time, 'select', direction);   // fftg/bbtg ก็มีรุ่นนี้
 // ffcmg(speed, cm, direction);                 bbcmg(speed, cm, direction);
@@ -421,6 +422,8 @@ lb(100);
 // ffbg(speed, 'select', direction);            bbbg(speed, 'select', direction);
 //
 // ▶ หน่วงเบรก (ตั้งใน Setting.ino): set_brake_fc(ff, fc);  set_brake_bc(bf, bc);
+// ▶ เซนเซอร์หน้าที่หยุดเลี้ยว TurnLeft (F[0..l]) / TurnRight (F[7..r]): SetSensorTurnLeftRight(l, r);
+// ▶ เซนเซอร์หลังที่หยุดเลี้ยว TurnLeft_B (B[7..l]) / TurnRight_B (B[0..r]): SetSensorTurnLeftRight_B(l, r);
 // ▶ เวลาเบรกตอนหยุดที่เส้น ตามความเร็ว (ch = SPD_10 ... SPD_100): SetDelayBreak(ch, f, b);  // f=เดินหน้า b=ถอยหลัง (ms)
 //
 // ============================================================================
@@ -825,4 +828,3 @@ BBcmGyroS(40, 25, 'c');   // วิ่งถอย 25 cm แล้วหยุ�
                                      // then detect condition 'L'
 
 ==============================================================================*/
-

@@ -10,7 +10,7 @@ my_MCP3008s adc;
 #define numSensors NUM_SENSORS
 #define numSamples 400  // จำนวนตัวอย่างที่ใช้ตอน calibrate (~3 วิสำหรับ A/B, ~2 วิสำหรับ C ให้พอกวาดเซนเซอร์ผ่านเส้น)
 
-int rgb[] = {24, 25, 28};
+int rgb[] = { 24, 25, 28 };
 char led = 'b';
 
 int F[NUM_SENSORS], B[NUM_SENSORS], C[2];
@@ -23,7 +23,7 @@ int sensorValuesC[2][numSamples];
 
 uint8_t F_PIN[NUM_SENSORS] = { 0, 1, 2, 3, 4, 5, 6, 7 };
 uint8_t B_PIN[NUM_SENSORS] = { 7, 6, 5, 4, 3, 2, 1, 0 };
-uint8_t C_PIN[2] = {46, 47};
+uint8_t C_PIN[2] = { 46, 47 };
 int minValueF[NUM_SENSORS], maxValueF[NUM_SENSORS];
 int minValueB[NUM_SENSORS], maxValueB[NUM_SENSORS];
 int minValueC[2], maxValueC[2];
@@ -112,8 +112,10 @@ void get_maxmin_A() {
   }
   writeEEPROM(EEPROM_ADDRESS, 16, buffer, 16);
 
-  tone(32, 950, 100); delay(200);
-  tone(32, 950, 200); delay(200);
+  tone(32, 950, 100);
+  delay(200);
+  tone(32, 950, 200);
+  delay(200);
 }
 
 // ==================== get_maxmin_B (เหมือน A) ====================
@@ -146,8 +148,10 @@ void get_maxmin_B() {
   }
   writeEEPROM(EEPROM_ADDRESS, 48, buffer, 16);
 
-  tone(32, 950, 100); delay(200);
-  tone(32, 950, 200); delay(200);
+  tone(32, 950, 100);
+  delay(200);
+  tone(32, 950, 200);
+  delay(200);
 }
 
 // ==================== get_maxmin_C (ของคุณเดิม + constrain) ====================
@@ -175,19 +179,21 @@ void get_maxmin_C() {
 
   uint8_t buffer[4];
   for (int i = 0; i < 2; i++) {
-    buffer[i*2]     = highByte(sensorMaxC[i]);
-    buffer[i*2 + 1] = lowByte(sensorMaxC[i]);
+    buffer[i * 2] = highByte(sensorMaxC[i]);
+    buffer[i * 2 + 1] = lowByte(sensorMaxC[i]);
   }
   writeEEPROM(EEPROM_ADDRESS, 64, buffer, 4);
 
   for (int i = 0; i < 2; i++) {
-    buffer[i*2]     = highByte(sensorMinC[i]);
-    buffer[i*2 + 1] = lowByte(sensorMinC[i]);
+    buffer[i * 2] = highByte(sensorMinC[i]);
+    buffer[i * 2 + 1] = lowByte(sensorMinC[i]);
   }
   writeEEPROM(EEPROM_ADDRESS, 68, buffer, 4);
 
-  tone(32, 1200, 150); delay(200);
-  tone(32, 1500, 200); delay(250);
+  tone(32, 1200, 150);
+  delay(200);
+  tone(32, 1500, 200);
+  delay(250);
   noTone(32);
 }
 
@@ -206,10 +212,15 @@ void read_eepA() {
 
   Serial.println("Sensor A Values read from EEPROM:");
   for (int sensor = 0; sensor < numSensors; sensor++) {
-    Serial.print("Sensor "); Serial.print(sensor); Serial.print(" => Max: "); Serial.print(readMaxA[sensor]); Serial.print(", Min: "); Serial.println(readMinA[sensor]);
-    sensorMaxA[sensor] = readMaxA[sensor];   // โหลดเข้า sensorMaxA จริง
-    sensorMinA[sensor] = readMinA[sensor];   // โหลดเข้า sensorMinA จริง
-  }   
+    Serial.print("Sensor ");
+    Serial.print(sensor);
+    Serial.print(" => Max: ");
+    Serial.print(readMaxA[sensor]);
+    Serial.print(", Min: ");
+    Serial.println(readMinA[sensor]);
+    sensorMaxA[sensor] = readMaxA[sensor];  // โหลดเข้า sensorMaxA จริง
+    sensorMinA[sensor] = readMinA[sensor];  // โหลดเข้า sensorMinA จริง
+  }
 }
 
 // ==================== read_eepB (เหมือนกัน) ====================
@@ -227,9 +238,14 @@ void read_eepB() {
 
   Serial.println("Sensor B Values read from EEPROM:");
   for (int sensor = 0; sensor < numSensors; sensor++) {
-    Serial.print("Sensor "); Serial.print(sensor); Serial.print(" => Max: "); Serial.print(readMaxB[sensor]); Serial.print(", Min: "); Serial.println(readMinB[sensor]);
-    sensorMaxB[sensor] = readMaxB[sensor];   // โหลดเข้า sensorMaxB จริง
-    sensorMinB[sensor] = readMinB[sensor];   // โหลดเข้า sensorMinB จริง
+    Serial.print("Sensor ");
+    Serial.print(sensor);
+    Serial.print(" => Max: ");
+    Serial.print(readMaxB[sensor]);
+    Serial.print(", Min: ");
+    Serial.println(readMinB[sensor]);
+    sensorMaxB[sensor] = readMaxB[sensor];  // โหลดเข้า sensorMaxB จริง
+    sensorMinB[sensor] = readMinB[sensor];  // โหลดเข้า sensorMinB จริง
   }
 }
 
@@ -247,32 +263,56 @@ void read_eepC() {
   }
 
   Serial.println("Sensor C Values read from EEPROM:");
-  Serial.print("Sensor C0 (Pin 46) => Max: "); Serial.print(readMaxC[0]); Serial.print(", Min: "); Serial.println(readMinC[0]);
-  Serial.print("Sensor C1 (Pin 47) => Max: "); Serial.print(readMaxC[1]); Serial.print(", Min: "); Serial.println(readMinC[1]);
+  Serial.print("Sensor C0 (Pin 46) => Max: ");
+  Serial.print(readMaxC[0]);
+  Serial.print(", Min: ");
+  Serial.println(readMinC[0]);
+  Serial.print("Sensor C1 (Pin 47) => Max: ");
+  Serial.print(readMaxC[1]);
+  Serial.print(", Min: ");
+  Serial.println(readMinC[1]);
 
-  sensorMaxC[0] = readMaxC[0]; sensorMinC[0] = readMinC[0];   // โหลดเข้า sensorMaxC/sensorMinC จริง
-  sensorMaxC[1] = readMaxC[1]; sensorMinC[1] = readMinC[1];
+  sensorMaxC[0] = readMaxC[0];
+  sensorMinC[0] = readMinC[0];  // โหลดเข้า sensorMaxC/sensorMinC จริง
+  sensorMaxC[1] = readMaxC[1];
+  sensorMinC[1] = readMinC[1];
 }
 
 // ==================== แสดงผล (ใช้ตัวแปรเดียวกัน) ====================
 void read_sensorA_program() {
   Serial.println("Sensor MAX A Values read from program:");
   for (int sensor = 0; sensor < numSensors; sensor++) {
-    Serial.print("Sensor "); Serial.print(sensor); Serial.print(" => Max: "); Serial.print(sensorMaxA[sensor]); Serial.print(", Min: "); Serial.println(sensorMinA[sensor]);
-  }   
+    Serial.print("Sensor ");
+    Serial.print(sensor);
+    Serial.print(" => Max: ");
+    Serial.print(sensorMaxA[sensor]);
+    Serial.print(", Min: ");
+    Serial.println(sensorMinA[sensor]);
+  }
 }
 
 void read_sensorB_program() {
   Serial.println("Sensor MAX B Values read from program:");
   for (int sensor = 0; sensor < numSensors; sensor++) {
-    Serial.print("Sensor "); Serial.print(sensor); Serial.print(" => Max: "); Serial.print(sensorMaxB[sensor]); Serial.print(", Min: "); Serial.println(sensorMinB[sensor]);
-  }   
+    Serial.print("Sensor ");
+    Serial.print(sensor);
+    Serial.print(" => Max: ");
+    Serial.print(sensorMaxB[sensor]);
+    Serial.print(", Min: ");
+    Serial.println(sensorMinB[sensor]);
+  }
 }
 
 void read_sensorC_program() {
   Serial.println("Sensor C Values read from program:");
-  Serial.print("Sensor C0 (Pin 46) => Max: "); Serial.print(sensorMaxC[0]); Serial.print(", Min: "); Serial.println(sensorMinC[0]);
-  Serial.print("Sensor C1 (Pin 47) => Max: "); Serial.print(sensorMaxC[1]); Serial.print(", Min: "); Serial.println(sensorMinC[1]);
+  Serial.print("Sensor C0 (Pin 46) => Max: ");
+  Serial.print(sensorMaxC[0]);
+  Serial.print(", Min: ");
+  Serial.println(sensorMinC[0]);
+  Serial.print("Sensor C1 (Pin 47) => Max: ");
+  Serial.print(sensorMaxC[1]);
+  Serial.print(", Min: ");
+  Serial.println(sensorMinC[1]);
 }
 
 void get_EEP_Program() {
@@ -285,27 +325,26 @@ void get_EEP_Program() {
 }
 
 void ReadF() {
-for (int i = 0; i < NUM_SENSORS; i++) {
+  for (int i = 0; i < NUM_SENSORS; i++) {
     F[i] = read_sensorA(F_PIN[i]);
   }
 }
 
 void ReadB() {
-    for (int i = 0; i < NUM_SENSORS; i++) {
+  for (int i = 0; i < NUM_SENSORS; i++) {
     B[i] = read_sensorB(B_PIN[i]);
   }
-
 }
 
 
 
 void ReadC() {
-  for (int i = 0; i < 2; i++) {  
-  C[i] = analogRead(C_PIN[i]); 
- }
+  for (int i = 0; i < 2; i++) {
+    C[i] = analogRead(C_PIN[i]);
+  }
 }
 
-void SetAnalogDistance(int x){
+void SetAnalogDistance(int x) {
   DIST = x;
 }
 
@@ -313,16 +352,16 @@ void TrackLineColor(int Col) {
   LineColor = Col;
 }
 
-void clampSensorValueF(int x, int y){
+void clampSensorValueF(int x, int y) {
   FRONT_MIN = x;
   FRONT_MAX = y;
 }
 
-void clampSensorValueC(int x, int y){
+void clampSensorValueC(int x, int y) {
   CENTER_MIN = x;
   CENTER_MAX = y;
 }
-void clampSensorValueB(int x, int y){
+void clampSensorValueB(int x, int y) {
   BACK_MIN = x;
   BACK_MAX = y;
 }
@@ -336,19 +375,17 @@ void ReadCalibrateF() {
       x = map(F[i], sensorMinA[i], sensorMaxA[i], 1000, 0);
     else
       x = map(F[i], sensorMinA[i], sensorMaxA[i], 0, 1000);
-    if (x < FRONT_MIN)   x = 0;
-    if (x > FRONT_MAX)  x = 1000;
+    if (x < FRONT_MIN) x = 0;
+    if (x > FRONT_MAX) x = 1000;
     // if (x < 0)    x = 0;
     // if (x > 1000) x = 1000;
     F[i] = x;
   }
-
-
 }
 
 void ReadCalibrateC() {
   ReadC();
-  
+
   for (int i = 0; i < 2; i++) {
     C[i] = constrain(C[i], sensorMinC[i], sensorMaxC[i]);
     int16_t x;
@@ -356,13 +393,12 @@ void ReadCalibrateC() {
       x = map(C[i], sensorMinC[i], sensorMaxC[i], 1000, 0);
     else
       x = map(C[i], sensorMinC[i], sensorMaxC[i], 0, 1000);
-    if (x < CENTER_MIN)   x = 0;
-    if (x > CENTER_MAX)  x = 1000;
+    if (x < CENTER_MIN) x = 0;
+    if (x > CENTER_MAX) x = 1000;
     // if (x < 0)    x = 0;
     // if (x > 1000) x = 1000;
     C[i] = x;
   }
-  
 }
 
 void ReadCalibrateB() {
@@ -375,13 +411,12 @@ void ReadCalibrateB() {
       x = map(B[i], sensorMinB[B_PIN[i]], sensorMaxB[B_PIN[i]], 1000, 0);
     else
       x = map(B[i], sensorMinB[B_PIN[i]], sensorMaxB[B_PIN[i]], 0, 1000);
-    if (x < BACK_MIN)   x = 0;
-    if (x > BACK_MAX)  x = 1000;
+    if (x < BACK_MIN) x = 0;
+    if (x > BACK_MAX) x = 1000;
     // if (x < 0)    x = 0;
     // if (x > 1000) x = 1000;
     B[i] = x;
   }
-  
 }
 
 
@@ -519,14 +554,12 @@ void SerialCalibrate_AllSensor() {
     for (int i = 0; i < NUM_SENSORS; i++) {
       Serial.print(F[i]);
       Serial.print("\t");
-   
     }
 
     Serial.print("B : ");
     for (int i = 0; i < NUM_SENSORS; i++) {
       Serial.print(B[i]);
       Serial.print("\t");
-   
     }
 
     Serial.print("C : ");
@@ -548,37 +581,30 @@ void SerialDistance() {
   }
 }
 
-void RGB(){
+void RGB() {
 
 
-   if(led == 'b')
-      {
-        digitalWrite(rgb[0],1);
-        digitalWrite(rgb[1],0);
-        digitalWrite(rgb[2],0);
-        led = 'g';
-      }
-    else if(led == 'g')
-      {
-        digitalWrite(rgb[0],0);
-        digitalWrite(rgb[1],1);
-        digitalWrite(rgb[2],0);
-        led = 'r';
-      }
-    else if(led == 'r')
-      {
-        digitalWrite(rgb[0],0);
-        digitalWrite(rgb[1],0);
-        digitalWrite(rgb[2],1);
-        led = 'w';
-      }
-    else if(led == 'w')
-      {
-        digitalWrite(rgb[0],1);
-        digitalWrite(rgb[1],1);
-        digitalWrite(rgb[2],1);
-        led = 'b';
-      }
+  if (led == 'b') {
+    digitalWrite(rgb[0], 1);
+    digitalWrite(rgb[1], 0);
+    digitalWrite(rgb[2], 0);
+    led = 'g';
+  } else if (led == 'g') {
+    digitalWrite(rgb[0], 0);
+    digitalWrite(rgb[1], 1);
+    digitalWrite(rgb[2], 0);
+    led = 'r';
+  } else if (led == 'r') {
+    digitalWrite(rgb[0], 0);
+    digitalWrite(rgb[1], 0);
+    digitalWrite(rgb[2], 1);
+    led = 'w';
+  } else if (led == 'w') {
+    digitalWrite(rgb[0], 1);
+    digitalWrite(rgb[1], 1);
+    digitalWrite(rgb[2], 1);
+    led = 'b';
+  }
 }
 
 #endif

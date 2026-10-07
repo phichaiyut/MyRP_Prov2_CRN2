@@ -2,34 +2,30 @@
 #ifndef MYRP_PROV2_MOTOR_H
 #define MYRP_PROV2_MOTOR_H
 
-#define PWMA 6     // PWM ซ้าย
+#define PWMA 6  // PWM ซ้าย
 #define AIN1 22
 #define AIN2 23
 
-#define PWMB 3     // PWM ขวา
+#define PWMB 3  // PWM ขวา
 #define BIN1 21
 #define BIN2 20
 
-String Freq_motor ;
-void set_Freq(String fr_motor)
-  {
-    Freq_motor = fr_motor;
-  }  
+String Freq_motor;
+void set_Freq(String fr_motor) {
+  Freq_motor = fr_motor;
+}
 
 void Motor(int pwmL, int pwmR) {
-   // ตั้งความละเอียด PWM เป็น 12 บิต (0–4095)
-    analogWriteResolution(12);
-    // ความถี่ PWM: มอเตอร์ธรรมดา (DC_Motors) ใช้ 1000 Hz, มอเตอร์ Coreless (ค่าอื่น) ใช้ 20000 Hz (ลดเสียงรบกวน)
-    if (Freq_motor == "DC_Motors")
-      {
-        analogWriteFreq(1000);
-      }
-    else
-      {
-        analogWriteFreq(20000);
-      }
-     delayMicroseconds(50);
-   
+  // ตั้งความละเอียด PWM เป็น 12 บิต (0–4095)
+  analogWriteResolution(12);
+  // ความถี่ PWM: มอเตอร์ธรรมดา (DC_Motors) ใช้ 1000 Hz, มอเตอร์ Coreless (ค่าอื่น) ใช้ 20000 Hz (ลดเสียงรบกวน)
+  if (Freq_motor == "DC_Motors") {
+    analogWriteFreq(1000);
+  } else {
+    analogWriteFreq(20000);
+  }
+  delayMicroseconds(50);
+
   // แปลงค่าจาก -100..100 ให้เป็น 0..4095
   int pwmValueL = map(abs(pwmL), 0, 100, 0, 4095);
   int pwmValueR = map(abs(pwmR), 0, 100, 0, 4095);
@@ -65,30 +61,30 @@ void Motor(int pwmL, int pwmR) {
   analogWrite(PWMB, pwmValueR);
 }
 
-void Move(int l,int r ,int t){
-    Motor(l,r);
-    delay(t);
+void Move(int l, int r, int t) {
+  Motor(l, r);
+  delay(t);
 }
 
-void MotorStop(){
-    Motor(0,0);
-    // delay(t);
+void MotorStop() {
+  Motor(0, 0);
+  // delay(t);
 }
 
-void MotorStop(int t){
-    Motor(0,0);
-    Beep(t);
+void MotorStop(int t) {
+  Motor(0, 0);
+  Beep(t);
 }
 
 // เบรกแบบ active short-brake (ลัดขั้วมอเตอร์ผ่าน back-EMF) กันไถลจากแรงเฉื่อยที่ความเร็วสูง
 // ต่างจาก MotorStop() ที่ปล่อยมอเตอร์ให้ไหลอิสระ (coast) โดยตั้งขา IN ทั้งคู่เป็น LOW
-void MotorShot(){
-    digitalWrite(AIN1, HIGH);
-    digitalWrite(AIN2, HIGH);
-    digitalWrite(BIN1, HIGH);
-    digitalWrite(BIN2, HIGH);
-    analogWrite(PWMA, 4095);
-    analogWrite(PWMB, 4095);
+void MotorShot() {
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, HIGH);
+  digitalWrite(BIN1, HIGH);
+  digitalWrite(BIN2, HIGH);
+  analogWrite(PWMA, 4095);
+  analogWrite(PWMB, 4095);
 }
 
 
@@ -102,8 +98,8 @@ int L[10], R[10];
 int BL[10], BR[10];
 float KP[10], KD[10];
 float KP_Back[10], KD_Back[10];
-int delay_break_f_table[10] = {30, 30, 30, 30, 30, 30, 30, 30, 30, 30};
-int delay_break_b_table[10] = {30, 30, 30, 30, 30, 30, 30, 30, 30, 30};
+int delay_break_f_table[10] = { 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 };
+int delay_break_b_table[10] = { 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 };
 
 // ��˹� index ���ӧ���
 #define SPD_10 0
@@ -127,12 +123,12 @@ void setBalanceBackSpeed(int ch, int spdL, int spdR) {
   BR[ch] = spdR;
 }
 
-void Set_KP_KD(int ch, float kp,float kd){
+void Set_KP_KD(int ch, float kp, float kd) {
   KP[ch] = kp;
   KD[ch] = kd;
 }
 
-void Set_KP_KD_Back(int ch, float kp,float kd){
+void Set_KP_KD_Back(int ch, float kp, float kd) {
   KP_Back[ch] = kp;
   KD_Back[ch] = kd;
 }
@@ -153,9 +149,9 @@ void InitialSpeed() {
   RightBaseSpeed = BaseSpeed - R[idx];
   BackLeftBaseSpeed = BaseSpeed - BL[idx];
   BackRightBaseSpeed = BaseSpeed - BR[idx];
-  PID_KP_Front = KP[idx];       // forward PID
+  PID_KP_Front = KP[idx];  // forward PID
   PID_KD_Front = KD[idx];
-  PID_KP_Back = KP_Back[idx];   // backward PID
+  PID_KP_Back = KP_Back[idx];  // backward PID
   PID_KD_Back = KD_Back[idx];
   delay_break_f = delay_break_f_table[idx];
   delay_break_b = delay_break_b_table[idx];

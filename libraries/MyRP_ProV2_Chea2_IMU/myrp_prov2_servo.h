@@ -26,38 +26,38 @@ int Servo_tim36 = 0;
 
 // ฟังก์ชันตั้งค่า trim
 void S34_trim(int _s34) {
-    Servo_tim34 = _s34;
+  Servo_tim34 = _s34;
 }
 
 void S35_trim(int _s35) {
-    Servo_tim35 = _s35; // แก้ไขจาก servo_tim34 เป็น servo_tim35
+  Servo_tim35 = _s35;  // แก้ไขจาก servo_tim34 เป็น servo_tim35
 }
 
 void S36_trim(int _s36) {
-    Servo_tim36 = _s36; // แก้ไขจาก servo_tim34 เป็น servo_tim36
+  Servo_tim36 = _s36;  // แก้ไขจาก servo_tim34 เป็น servo_tim36
 }
 
 // ฟังก์ชันควบคุมเซอร์โว
 void Servo(int servo, int angle) {
-    if (servo == 39) {
-        if (!Servo_39.attached()) Servo_39.attach(Servo39, 500, 2500);
-        Servo_39.write(constrain(angle,0,180));
-    } else if (servo == 38) {
-        if (!Servo_38.attached()) Servo_38.attach(Servo38, 500, 2500);
-        Servo_38.write(constrain(angle,0,180));
-    } else if (servo == 37) {
-        if (!Servo_37.attached()) Servo_37.attach(Servo37, 500, 2500);
-        Servo_37.write(constrain(angle,0,180));
-    } else if (servo == 36) {
-        if (!Servo_36.attached()) Servo_36.attach(Servo36, 500, 2500);
-        Servo_36.write(constrain(angle+Servo_tim36,0,180));
-    } else if (servo == 35) {
-        if (!Servo_35.attached()) Servo_35.attach(Servo35, 500, 2500);
-        Servo_35.write(constrain((180 - angle)-Servo_tim35,0,180));
-    } else if (servo == 34) {
-        if (!Servo_34.attached()) Servo_34.attach(Servo34, 500, 2500);
-        Servo_34.write(constrain(angle+Servo_tim34,0,180) );
-    }
+  if (servo == 39) {
+    if (!Servo_39.attached()) Servo_39.attach(Servo39, 500, 2500);
+    Servo_39.write(constrain(angle, 0, 180));
+  } else if (servo == 38) {
+    if (!Servo_38.attached()) Servo_38.attach(Servo38, 500, 2500);
+    Servo_38.write(constrain(angle, 0, 180));
+  } else if (servo == 37) {
+    if (!Servo_37.attached()) Servo_37.attach(Servo37, 500, 2500);
+    Servo_37.write(constrain(angle, 0, 180));
+  } else if (servo == 36) {
+    if (!Servo_36.attached()) Servo_36.attach(Servo36, 500, 2500);
+    Servo_36.write(constrain(angle + Servo_tim36, 0, 180));
+  } else if (servo == 35) {
+    if (!Servo_35.attached()) Servo_35.attach(Servo35, 500, 2500);
+    Servo_35.write(constrain((180 - angle) - Servo_tim35, 0, 180));
+  } else if (servo == 34) {
+    if (!Servo_34.attached()) Servo_34.attach(Servo34, 500, 2500);
+    Servo_34.write(constrain(angle + Servo_tim34, 0, 180));
+  }
 }
 
 
@@ -67,7 +67,7 @@ void Servo(int servo, int angle) {
 int currentServo = -1;
 int currentAngle = 90;
 
-int pos[3] ={90,90,90};
+int pos[3] = { 90, 90, 90 };
 
 void SerialServoControl() {
   Serial.println("Serial Servo Control Mode");
@@ -81,7 +81,7 @@ void SerialServoControl() {
       if (command.equalsIgnoreCase("exit")) {
         Serial.println("Exiting Serial Servo Control Mode");
         break;
-      }                 
+      }
     }
 
     // รับคำสั่งจาก Serial
@@ -110,14 +110,14 @@ void SerialServoControl() {
       Servo(currentServo, currentAngle);
     }
 
-    delay(50); // ~50Hz เหมาะกับ servo
+    delay(50);  // ~50Hz เหมาะกับ servo
   }
 }
 
 
 void Servo(int x, int y, int z) {
   MotorStop();
-  int a[] = {x, y, z}, s[] = {Servo36, Servo34, Servo35};
+  int a[] = { x, y, z }, s[] = { Servo36, Servo34, Servo35 };
   for (int i = 0; i < 3; i++) Servo(s[i], pos[i] = a[i]);
   delay(20);
 }
@@ -125,8 +125,8 @@ void Servo(int x, int y, int z) {
 void Servo(int target1, int target2, int target3, int spd) {
   MotorStop();
 
-  int target[3] = {target1, target2, target3};
-  int sv[3] = {Servo36, Servo34, Servo35};
+  int target[3] = { target1, target2, target3 };
+  int sv[3] = { Servo36, Servo34, Servo35 };
 
   while (pos[0] != target[0] || pos[1] != target[1] || pos[2] != target[2]) {
     for (int i = 0; i < 3; i++) {
@@ -153,8 +153,7 @@ void armupdown(int x) {
 
 void arm_left_right(int l, int r) {
   Servo(Servo34, pos[1] = l);
-  Servo(Servo35,  pos[2] = r);
+  Servo(Servo35, pos[2] = r);
 }
 
 #endif
-
