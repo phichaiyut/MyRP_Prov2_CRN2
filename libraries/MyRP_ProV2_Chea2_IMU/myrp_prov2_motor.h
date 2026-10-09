@@ -24,7 +24,6 @@ void Motor(int pwmL, int pwmR) {
   } else {
     analogWriteFreq(20000);
   }
-  delayMicroseconds(50);
 
   // แปลงค่าจาก -100..100 ให้เป็น 0..4095
   int pwmValueL = map(abs(pwmL), 0, 100, 0, 4095);
